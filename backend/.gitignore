@@ -1,0 +1,9 @@
+node_modules/
+data/
+.env
+uploads/qr-code.*
+!uploads/.gitkeep
+
+
+#Ignore everything in data/* except
+data/*.db
