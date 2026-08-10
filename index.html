@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorldPlate | Experience the Taste of the World</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230c0c0c'/><text x='50%25' y='50%25' font-family='sans-serif' font-weight='bold' font-size='55' fill='%23ff4500' text-anchor='middle' dominant-baseline='central'>WP</text></svg>">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="booking.css">
+    <link rel="stylesheet" href="booking-panel.css">
+</head>
+<body>
+    <!-- Skeleton Loader -->
+    <div class="loader-wrapper" id="skeletonLoader">
+        <div class="loader-content">
+            <div class="skeleton-header">
+                <div class="skeleton skeleton-logo"></div>
+                <div class="skeleton skeleton-nav-links"></div>
+            </div>
+            <div class="skeleton-hero">
+                <div class="skeleton-hero-text-area">
+                    <div class="skeleton skeleton-hero-title"></div>
+                    <div class="skeleton skeleton-hero-title short"></div>
+                    <div class="skeleton skeleton-hero-subtitle"></div>
+                    <div class="skeleton skeleton-hero-button"></div>
+                </div>
+                <div class="skeleton skeleton-hero-image"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content" style="visibility: hidden;">
+        <!-- Header -->
+        <header class="header">
+            <a href="#" class="logo">World<span>Plate</span></a>
+            <nav class="navbar">
+                <div class="close-menu"><i class='bx bx-x'></i></div>
+                <a href="#home" class="active">Home</a>
+                <a href="#menu">Menu</a>
+                <a href="#about">About Us</a>
+                <a href="#specials">Specials</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <button id="theme-toggle" class="theme-toggle-btn"><i class='bx bx-moon'></i></button>
+                <a href="products.html" class="cart-icon"><i class='bx bx-shopping-bag'></i></a>
+                <a href="#" id="openBookingPanelBtn" class="btn-booking-panel"><i class='bx bx-calendar-check'></i> <span>Booking Panel</span></a>
+                <a href="#" id="openMenuCardBtn" class="btn btn-primary">Menu Card</a>
+                <!-- Mobile Menu Toggle -->
+                <div class="menu-toggle"><i class='bx bx-menu'></i></div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1 class="hero-title">Experience the <br><span class="highlight">Taste</span> of the <br>World.</h1>
+                <p class="hero-subtitle">From classic favorites to exotic delights, explore a diverse menu inspired by cuisines from across the globe.</p>
+                <div class="hero-buttons">
+                    <a href="products.html" class="btn btn-primary">Learn More</a>
+                    <a href="#" class="btn btn-secondary" id="bookTableBtn">Book A Table</a>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="stat-box">
+                        <div class="stat-info">
+                            <h3>Great food and lots of discounted prices</h3>
+                            <div class="avatars">
+                                <img src="https://i.pravatar.cc/100?img=1" alt="User">
+                                <img src="https://i.pravatar.cc/100?img=2" alt="User">
+                                <img src="https://i.pravatar.cc/100?img=3" alt="User">
+                                <span class="avatar-more">45+</span>
+                            </div>
+                            <p class="small-text">People grabbed the offer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image-container">
+                <div class="hero-circle-bg"></div>
+                <img src="assets/images/hero_bowl.png" alt="Gourmet Bowl" class="hero-img floating-element">
+                <!-- Floating decorative items can go here -->
+                <div class="floating-badge">
+                    <h2>50%</h2>
+                    <p>offer on Now</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Best Delivered / Menu Section -->
+        <section class="menu-section" id="menu">
+            <div class="section-header">
+                <h2>Our Best <span class="highlight">Delivered</span></h2>
+            </div>
+            <div class="menu-grid">
+                <!-- Card 1 -->
+                <div class="menu-card">
+                    <img src="assets/images/dish_1.png" alt="Breakfast Special" class="menu-card-img">
+                    <div class="menu-card-content">
+                        <h3>Breakfast Specials</h3>
+                        <p>Explore our top-rated food categories, crafted to satisfy every craving! From delicious breakfasts.</p>
+                        <div class="price-row">
+                            <span class="price">₹1515</span>
+                            <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="menu-card">
+                    <img src="assets/images/dish_2.png" alt="Margherita Pizza" class="menu-card-img">
+                    <div class="menu-card-content">
+                        <h3>Margherita Pizza</h3>
+                        <p>Explore our top-rated food categories, crafted to satisfy every craving! From delicious breakfasts.</p>
+                        <div class="price-row">
+                            <span class="price">₹1273</span>
+                            <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="menu-card">
+                    <img src="assets/images/dish_1.png" alt="Stuffed Ravioli" class="menu-card-img">
+                    <div class="menu-card-content">
+                        <h3>Stuffed Ravioli</h3>
+                        <p>Explore our top-rated food categories, crafted to satisfy every craving! From delicious breakfasts.</p>
+                        <div class="price-row">
+                            <span class="price">₹787</span>
+                            <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="menu-card">
+                    <img src="assets/images/hero_bowl.png" alt="Spicy Ramen Bowl" class="menu-card-img">
+                    <div class="menu-card-content">
+                        <h3>Spicy Ramen Bowl</h3>
+                        <p>Authentic ramen with a spicy kick, served with fresh vegetables and perfectly boiled eggs.</p>
+                        <div class="price-row">
+                            <span class="price">₹1047</span>
+                            <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="menu-card">
+                    <img src="assets/images/dish_2.png" alt="Veggie Supreme Pizza" class="menu-card-img">
+                    <div class="menu-card-content">
+                        <h3>Veggie Supreme Pizza</h3>
+                        <p>Loaded with fresh vegetables and a blend of three cheeses on a crispy thin crust.</p>
+                        <div class="price-row">
+                            <span class="price">₹1663</span>
+                            <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 6 -->
+                <div class="menu-card">
+                    <img src="assets/images/dish_1.png" alt="Classic Avocado Toast" class="menu-card-img">
+                    <div class="menu-card-content">
+                        <h3>Classic Avocado Toast</h3>
+                        <p>Smashed avocado on artisan bread, topped with cherry tomatoes and microgreens.</p>
+                        <div class="price-row">
+                            <span class="price">₹1389</span>
+                            <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <!-- About Us Section -->
+        <section class="about-section" id="about">
+            <div class="section-header">
+                <h2>Our <span class="highlight">Story</span></h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>A Culinary Journey from Puri to the World</h3>
+                    <p>Founded by Sabita Sahoo, WorldPlate started with a simple vision: to bring authentic, global flavors to the heart of Puri, Odisha. We believe that food is more than just sustenance; it's an experience that brings people together.</p>
+                    <p>Every dish is crafted with passion, using locally sourced ingredients fused with international culinary techniques.</p>
+                    <a href="#menu" class="btn btn-primary">Discover Our Menu</a>
+                </div>
+                <div class="about-image">
+                    <img src="assets/images/dish_1.png" alt="Chef Sabita Sahoo's creation">
+                </div>
+            </div>
+        </section>
+
+        <!-- Specials Section -->
+        <section class="specials-section" id="specials">
+            <div class="section-header">
+                <h2>Today's <span class="highlight">Specials</span></h2>
+            </div>
+            <div class="menu-grid">
+                <!-- Reuse menu-card styles -->
+                <div class="menu-card">
+                    <img src="assets/images/dish_2.png" alt="Special Dish" class="menu-card-img">
+                    <div class="menu-card-content">
+                        <h3>Chef's Special Pizza</h3>
+                        <p>A secret blend of exotic spices and fresh farm ingredients.</p>
+                        <div class="price-row">
+                            <span class="price">₹603</span>
+                            <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section" id="contact">
+            <div class="section-header">
+                <h2>Get in <span class="highlight">Touch</span></h2>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Location</h3>
+                    <p><i class='bx bx-map'></i> Puri, Odisha, India</p>
+                    <h3>Opening Hours</h3>
+                    <p><i class='bx bx-time-five'></i> Mon-Sun: 10:00 AM - 11:00 PM</p>
+                    <h3>Contact Us</h3>
+                    <p><i class='bx bx-phone'></i> +91 123 456 7890</p>
+                </div>
+                <form id="contactForm" class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="974fd49f-02f6-4816-aed7-9faf64a7a305">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 WorldPlate by Sabita Sahoo. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn"><i class='bx bx-up-arrow-alt'></i></button>
+
+    <!-- Menu Card Modal -->
+    <div class="menu-modal-overlay" id="menuCardModal">
+        <div class="menu-modal">
+            <div class="menu-modal-header">
+                <h2>Our Menu</h2>
+                <button class="close-modal-btn" id="closeMenuCardBtn"><i class='bx bx-x'></i></button>
+            </div>
+            <div class="menu-modal-body">
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Spicy Ramen Bowl">
+                    <div class="menu-list-info">
+                        <h4>Spicy Ramen Bowl</h4>
+                        <span class="price">₹1005</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Veggie Supreme Pizza">
+                    <div class="menu-list-info">
+                        <h4>Veggie Supreme Pizza</h4>
+                        <span class="price">₹1966</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Classic Avocado Toast">
+                    <div class="menu-list-info">
+                        <h4>Classic Avocado Toast</h4>
+                        <span class="price">₹1668</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Sushi Platter">
+                    <div class="menu-list-info">
+                        <h4>Sushi Platter</h4>
+                        <span class="price">₹817</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Margherita Pizza">
+                    <div class="menu-list-info">
+                        <h4>Margherita Pizza</h4>
+                        <span class="price">₹1969</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Stuffed Ravioli">
+                    <div class="menu-list-info">
+                        <h4>Stuffed Ravioli</h4>
+                        <span class="price">₹1052</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Breakfast Specials">
+                    <div class="menu-list-info">
+                        <h4>Breakfast Specials</h4>
+                        <span class="price">₹1957</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Gourmet Burger">
+                    <div class="menu-list-info">
+                        <h4>Gourmet Burger</h4>
+                        <span class="price">₹1549</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Caesar Salad">
+                    <div class="menu-list-info">
+                        <h4>Caesar Salad</h4>
+                        <span class="price">₹1593</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Chicken Tikka Masala">
+                    <div class="menu-list-info">
+                        <h4>Chicken Tikka Masala</h4>
+                        <span class="price">₹988</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Beef Wellington">
+                    <div class="menu-list-info">
+                        <h4>Beef Wellington</h4>
+                        <span class="price">₹1718</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Lobster Bisque">
+                    <div class="menu-list-info">
+                        <h4>Lobster Bisque</h4>
+                        <span class="price">₹1281</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Pad Thai">
+                    <div class="menu-list-info">
+                        <h4>Pad Thai</h4>
+                        <span class="price">₹603</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Tacos Al Pastor">
+                    <div class="menu-list-info">
+                        <h4>Tacos Al Pastor</h4>
+                        <span class="price">₹810</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Mushroom Risotto">
+                    <div class="menu-list-info">
+                        <h4>Mushroom Risotto</h4>
+                        <span class="price">₹1394</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Peking Duck">
+                    <div class="menu-list-info">
+                        <h4>Peking Duck</h4>
+                        <span class="price">₹1168</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Fish and Chips">
+                    <div class="menu-list-info">
+                        <h4>Fish and Chips</h4>
+                        <span class="price">₹615</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Paella">
+                    <div class="menu-list-info">
+                        <h4>Paella</h4>
+                        <span class="price">₹1439</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Falafel Wrap">
+                    <div class="menu-list-info">
+                        <h4>Falafel Wrap</h4>
+                        <span class="price">₹1215</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Tom Yum Soup">
+                    <div class="menu-list-info">
+                        <h4>Tom Yum Soup</h4>
+                        <span class="price">₹1483</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Croissant">
+                    <div class="menu-list-info">
+                        <h4>Croissant</h4>
+                        <span class="price">₹780</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Gelato">
+                    <div class="menu-list-info">
+                        <h4>Gelato</h4>
+                        <span class="price">₹1615</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Tiramisu">
+                    <div class="menu-list-info">
+                        <h4>Tiramisu</h4>
+                        <span class="price">₹1236</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Cheesecake">
+                    <div class="menu-list-info">
+                        <h4>Cheesecake</h4>
+                        <span class="price">₹1405</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Macarons">
+                    <div class="menu-list-info">
+                        <h4>Macarons</h4>
+                        <span class="price">₹1458</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="booking-modal-overlay" id="bookingModal">
+        <div class="booking-modal"></div>
+    </div>
+
+    <!-- Booking Panel Modal -->
+    <div class="bp-overlay" id="bookingPanelModal">
+        <div class="bp-modal"></div>
+    </div>
+
+    <!-- GSAP and scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+    <script src="booking.js"></script>
+    <script src="booking-panel.js"></script>
+</body>
+</html>

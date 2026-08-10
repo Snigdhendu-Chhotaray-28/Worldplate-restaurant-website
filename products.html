@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | WorldPlate</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230c0c0c'/><text x='50%25' y='50%25' font-family='sans-serif' font-weight='bold' font-size='55' fill='%23ff4500' text-anchor='middle' dominant-baseline='central'>WP</text></svg>">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html" class="logo">World<span>Plate</span></a>
+        <nav class="navbar">
+            <div class="close-menu"><i class='bx bx-x'></i></div>
+            <a href="index.html#home">Home</a>
+            <a href="index.html#menu">Menu</a>
+            <a href="index.html#about">About Us</a>
+            <a href="index.html#specials">Specials</a>
+            <a href="index.html#contact">Contact</a>
+        </nav>
+        <div class="header-actions">
+            <button id="theme-toggle" class="theme-toggle-btn"><i class='bx bx-moon'></i></button>
+            <a href="products.html" class="cart-icon"><i class='bx bx-shopping-bag'></i></a>
+            <a href="#" id="openMenuCardBtn" class="btn btn-primary">Menu Card</a>
+            <!-- Mobile Menu Toggle -->
+            <div class="menu-toggle"><i class='bx bx-menu'></i></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content products-page" style="margin-top: 120px; padding: 2rem 5%;">
+        <section class="products-header" style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="font-family: var(--font-heading); font-size: 3rem;">Our <span class="highlight">Menu</span> Collection</h1>
+            <p style="color: var(--text-muted);">Explore our extensive list of 25+ curated dishes from around the world.</p>
+        </section>
+
+        <!-- Search Feature -->
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <i class='bx bx-search'></i>
+                <input type="text" id="productSearchInput" placeholder="Search for a dish (e.g., Pizza, Ramen)...">
+            </div>
+            <ul class="search-recommendations" id="searchRecommendations"></ul>
+        </div>
+
+        <div class="not-found-message" id="notFoundMessage">
+            <h2><i class='bx bx-ghost'></i> Not found</h2>
+            <p>We couldn't find a dish with that name. Check out our best delivery products below!</p>
+        </div>
+
+        <section class="products-container">
+
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Spicy Ramen Bowl" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Spicy Ramen Bowl</h2>
+                        <p class="price">₹1005</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>537</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Veggie Supreme Pizza" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Veggie Supreme Pizza</h2>
+                        <p class="price">₹1966</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>176</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Classic Avocado Toast" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Classic Avocado Toast</h2>
+                        <p class="price">₹1668</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>481</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Sushi Platter" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Sushi Platter</h2>
+                        <p class="price">₹817</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>443</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Margherita Pizza" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Margherita Pizza</h2>
+                        <p class="price">₹1969</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>517</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Stuffed Ravioli" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Stuffed Ravioli</h2>
+                        <p class="price">₹1052</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>190</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Breakfast Specials" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Breakfast Specials</h2>
+                        <p class="price">₹1957</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>237</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Gourmet Burger" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Gourmet Burger</h2>
+                        <p class="price">₹1549</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>406</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Caesar Salad" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Caesar Salad</h2>
+                        <p class="price">₹1593</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>84</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Chicken Tikka Masala" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Chicken Tikka Masala</h2>
+                        <p class="price">₹988</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>443</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Beef Wellington" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Beef Wellington</h2>
+                        <p class="price">₹1718</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>500</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Lobster Bisque" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Lobster Bisque</h2>
+                        <p class="price">₹1281</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>383</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Pad Thai" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Pad Thai</h2>
+                        <p class="price">₹603</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>117</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Tacos Al Pastor" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Tacos Al Pastor</h2>
+                        <p class="price">₹810</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>415</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Mushroom Risotto" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Mushroom Risotto</h2>
+                        <p class="price">₹1394</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>423</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Peking Duck" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Peking Duck</h2>
+                        <p class="price">₹1168</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>183</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Fish and Chips" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Fish and Chips</h2>
+                        <p class="price">₹615</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>205</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Paella" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Paella</h2>
+                        <p class="price">₹1439</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>126</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Falafel Wrap" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Falafel Wrap</h2>
+                        <p class="price">₹1215</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>88</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Tom Yum Soup" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Tom Yum Soup</h2>
+                        <p class="price">₹1483</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>173</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Croissant" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Croissant</h2>
+                        <p class="price">₹780</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>207</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Gelato" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Gelato</h2>
+                        <p class="price">₹1615</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>543</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Tiramisu" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Tiramisu</h2>
+                        <p class="price">₹1236</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>476</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_1.png" alt="Cheesecake" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Cheesecake</h2>
+                        <p class="price">₹1405</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>128</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="product-item">
+                <div class="product-left">
+                    <img src="assets/images/dish_2.png" alt="Macarons" class="product-img" onerror="this.src='https://placehold.co/400?text=Food'">
+                    <div class="product-info-basic">
+                        <h2>Macarons</h2>
+                        <p class="price">₹1458</p>
+                        <button class="btn btn-primary cart-btn"><i class='bx bx-cart-add'></i> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-right">
+                    <div class="product-detail">
+                        <h3>Recipe & Ingredients</h3>
+                        <p>A beautiful blend of locally sourced ingredients. Made with fresh flour, organic tomatoes, basil, mozzarella, and a hint of extra virgin olive oil. Slowly cooked to perfection.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Order Quantity</h3>
+                        <p><strong>422</strong> orders placed this month.</p>
+                    </div>
+                    <div class="product-detail">
+                        <h3>Customer Review</h3>
+                        <p>"Absolutely delicious! Highly recommended! The flavors are authentic and rich." - ⭐⭐⭐⭐⭐</p>
+                    </div>
+                    <div class="product-detail product-history">
+                        <h3>History</h3>
+                        <p>Originating from the traditional culinary practices of the mid-20th century, this dish was created to celebrate the harvest season. It has evolved over decades while maintaining its core rustic charm.</p>
+                    </div>
+                </div>
+            </div>
+    
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 WorldPlate by Sabita Sahoo. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn"><i class='bx bx-up-arrow-alt'></i></button>
+
+    <!-- GSAP and scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Menu Card Modal -->
+    <div class="menu-modal-overlay" id="menuCardModal">
+        <div class="menu-modal">
+            <div class="menu-modal-header">
+                <h2>Our Menu</h2>
+                <button class="close-modal-btn" id="closeMenuCardBtn"><i class='bx bx-x'></i></button>
+            </div>
+            <div class="menu-modal-body">
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Spicy Ramen Bowl">
+                    <div class="menu-list-info">
+                        <h4>Spicy Ramen Bowl</h4>
+                        <span class="price">₹1005</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Veggie Supreme Pizza">
+                    <div class="menu-list-info">
+                        <h4>Veggie Supreme Pizza</h4>
+                        <span class="price">₹1966</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Classic Avocado Toast">
+                    <div class="menu-list-info">
+                        <h4>Classic Avocado Toast</h4>
+                        <span class="price">₹1668</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Sushi Platter">
+                    <div class="menu-list-info">
+                        <h4>Sushi Platter</h4>
+                        <span class="price">₹817</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Margherita Pizza">
+                    <div class="menu-list-info">
+                        <h4>Margherita Pizza</h4>
+                        <span class="price">₹1969</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Stuffed Ravioli">
+                    <div class="menu-list-info">
+                        <h4>Stuffed Ravioli</h4>
+                        <span class="price">₹1052</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Breakfast Specials">
+                    <div class="menu-list-info">
+                        <h4>Breakfast Specials</h4>
+                        <span class="price">₹1957</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Gourmet Burger">
+                    <div class="menu-list-info">
+                        <h4>Gourmet Burger</h4>
+                        <span class="price">₹1549</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Caesar Salad">
+                    <div class="menu-list-info">
+                        <h4>Caesar Salad</h4>
+                        <span class="price">₹1593</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Chicken Tikka Masala">
+                    <div class="menu-list-info">
+                        <h4>Chicken Tikka Masala</h4>
+                        <span class="price">₹988</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Beef Wellington">
+                    <div class="menu-list-info">
+                        <h4>Beef Wellington</h4>
+                        <span class="price">₹1718</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Lobster Bisque">
+                    <div class="menu-list-info">
+                        <h4>Lobster Bisque</h4>
+                        <span class="price">₹1281</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Pad Thai">
+                    <div class="menu-list-info">
+                        <h4>Pad Thai</h4>
+                        <span class="price">₹603</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Tacos Al Pastor">
+                    <div class="menu-list-info">
+                        <h4>Tacos Al Pastor</h4>
+                        <span class="price">₹810</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Mushroom Risotto">
+                    <div class="menu-list-info">
+                        <h4>Mushroom Risotto</h4>
+                        <span class="price">₹1394</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Peking Duck">
+                    <div class="menu-list-info">
+                        <h4>Peking Duck</h4>
+                        <span class="price">₹1168</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Fish and Chips">
+                    <div class="menu-list-info">
+                        <h4>Fish and Chips</h4>
+                        <span class="price">₹615</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Paella">
+                    <div class="menu-list-info">
+                        <h4>Paella</h4>
+                        <span class="price">₹1439</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Falafel Wrap">
+                    <div class="menu-list-info">
+                        <h4>Falafel Wrap</h4>
+                        <span class="price">₹1215</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Tom Yum Soup">
+                    <div class="menu-list-info">
+                        <h4>Tom Yum Soup</h4>
+                        <span class="price">₹1483</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Croissant">
+                    <div class="menu-list-info">
+                        <h4>Croissant</h4>
+                        <span class="price">₹780</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Gelato">
+                    <div class="menu-list-info">
+                        <h4>Gelato</h4>
+                        <span class="price">₹1615</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Tiramisu">
+                    <div class="menu-list-info">
+                        <h4>Tiramisu</h4>
+                        <span class="price">₹1236</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_1.png" alt="Cheesecake">
+                    <div class="menu-list-info">
+                        <h4>Cheesecake</h4>
+                        <span class="price">₹1405</span>
+                    </div>
+                </div>
+                <div class="menu-list-item">
+                    <img src="assets/images/dish_2.png" alt="Macarons">
+                    <div class="menu-list-info">
+                        <h4>Macarons</h4>
+                        <span class="price">₹1458</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | WorldPlate Booking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-page">
+    <div id="loginScreen" class="admin-login">
+        <h2>WorldPlate Admin</h2>
+        <input type="password" id="adminKeyInput" placeholder="Enter Admin API Key" autocomplete="off">
+        <button class="btn btn-primary" id="adminLoginBtn" style="width:100%">Login</button>
+        <p id="loginError" style="color:#ff6b7a;margin-top:0.75rem;font-size:0.85rem;display:none;"></p>
+    </div>
+
+    <div id="adminDashboard" style="display:none;">
+        <header class="admin-header">
+            <h1>World<span>Plate</span> Admin</h1>
+            <div style="display:flex;gap:0.75rem;align-items:center;">
+                <a href="index.html" class="btn btn-secondary" style="font-size:0.85rem;padding:0.5rem 1rem;">View Site</a>
+                <button class="btn btn-secondary" id="adminLogoutBtn" style="font-size:0.85rem;padding:0.5rem 1rem;">Logout</button>
+            </div>
+        </header>
+
+        <div class="admin-container">
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-panel="bookings">Bookings</button>
+                <button class="admin-tab" data-panel="tables">Table Inventory</button>
+                <button class="admin-tab" data-panel="pricing">Pricing</button>
+                <button class="admin-tab" data-panel="settings">QR & Settings</button>
+            </div>
+
+            <div id="panel-bookings" class="admin-panel active">
+                <div class="admin-card">
+                    <h3><i class='bx bx-calendar'></i> Recent Bookings</h3>
+                    <div style="margin-bottom:1rem;">
+                        <select id="bookingFilter" style="padding:0.5rem 0.85rem;border-radius:8px;background:var(--primary-bg);color:var(--text-color);border:1px solid rgba(255,255,255,0.1);font-family:var(--font-body);">
+                            <option value="">All Statuses</option>
+                            <option value="Pending Verification">Pending Verification</option>
+                            <option value="Payment Verified">Payment Verified</option>
+                            <option value="Payment Rejected">Payment Rejected</option>
+                        </select>
+                    </div>
+                    <div id="bookingsTableWrap"></div>
+                </div>
+            </div>
+
+            <div id="panel-tables" class="admin-panel">
+                <div class="admin-card">
+                    <h3><i class='bx bx-table'></i> Table Inventory</h3>
+                    <div id="tablesInventory"></div>
+                </div>
+            </div>
+
+            <div id="panel-pricing" class="admin-panel">
+                <div class="admin-card">
+                    <h3><i class='bx bx-rupee'></i> Pricing Configuration</h3>
+                    <div id="pricingConfig"></div>
+                </div>
+            </div>
+
+            <div id="panel-settings" class="admin-panel">
+                <div class="admin-card">
+                    <h3><i class='bx bx-qr'></i> Payment QR Code</h3>
+                    <img id="qrPreview" class="admin-qr-preview" src="" alt="QR Code">
+                    <form id="qrUploadForm">
+                        <input type="file" id="qrFileInput" accept="image/png,image/jpeg,image/webp" style="margin:0.75rem 0;">
+                        <button type="submit" class="btn btn-primary">Upload New QR Code</button>
+                    </form>
+                </div>
+                <div class="admin-card">
+                    <h3><i class='bx bx-cog'></i> General Settings</h3>
+                    <div class="admin-form-row">
+                        <div>
+                            <label>UPI ID</label>
+                            <input type="text" id="upiIdInput" placeholder="example@upi">
+                        </div>
+                        <div>
+                            <label>Restaurant Name</label>
+                            <input type="text" id="restaurantNameInput" placeholder="WorldPlate">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+                </div>
+                <div class="admin-card">
+                    <h3><i class='bx bx-trash'></i> Data Cleanup</h3>
+                    <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1rem;">Expired bookings are automatically deleted 24 hours after their reservation ends. You can also trigger cleanup manually.</p>
+                    <button class="btn btn-secondary" id="runCleanupBtn">Run Cleanup Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminToast" class="admin-toast"></div>
+    <script src="config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
