@@ -408,35 +408,7 @@
     transform: translateY(-1px);
 }
 
-/* Booking Panel header button */
-.btn-booking-panel {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.55rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
-    color: #d0d0d0;
-    font-family: inherit;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
-    white-space: nowrap;
-}
 
-.btn-booking-panel:hover {
-    background: rgba(255, 69, 0, 0.1);
-    border-color: rgba(255, 69, 0, 0.3);
-    color: #ff8c00;
-    transform: translateY(-1px);
-}
-
-.btn-booking-panel i {
-    font-size: 1rem;
-}
 
 /* Admin Panel button */
 .bp-admin-btn {
@@ -472,5 +444,4 @@
     .bp-overlay { align-items: flex-end; padding: 0; }
     .bp-body { padding: 1.25rem; }
     .bp-header { padding: 1.25rem 1.25rem 0.75rem; }
-    .btn-booking-panel span { display: none; }
 }

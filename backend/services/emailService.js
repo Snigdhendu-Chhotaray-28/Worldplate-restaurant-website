@@ -20,9 +20,11 @@ function formatTime12h(time24) {
     return `${hour}:${String(mi).padStart(2, '0')} ${ampm}`;
 }
 
-// --- Transporter --- created once at startup so misconfiguration is visible
+// --- Transporter Management with Auto-Reconnect & Retry ---
 
-function createTransporter() {
+let activeTransporter = null;
+
+function getTransporter() {
     const user = process.env.EMAIL_USER;
     const pass = process.env.EMAIL_PASS;
 
@@ -31,30 +33,53 @@ function createTransporter() {
         !pass || pass === 'your_16_char_app_password' || pass === 'PASTE_YOUR_16_CHAR_APP_PASSWORD_HERE'
     ) {
         console.warn('[EmailService] Gmail credentials not configured -- emails are disabled.');
-        console.warn('[EmailService] Set EMAIL_USER and EMAIL_PASS (App Password) in backend/.env and restart the server.');
         return null;
     }
 
-    return nodemailer.createTransport({
-        service: 'gmail',
-        auth: { user, pass }
-    });
+    if (!activeTransporter) {
+        activeTransporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: { user, pass },
+            connectionTimeout: 10000,
+            greetingTimeout: 10000,
+            socketTimeout: 15000,
+            pool: true,
+            maxConnections: 3
+        });
+    }
+
+    return activeTransporter;
 }
 
-const transporter = createTransporter();
+async function safeSendMail(mailOptions, retries = 2) {
+    const transporter = getTransporter();
+    if (!transporter) {
+        console.warn('[EmailService] Cannot send mail: Transporter is not configured.');
+        return false;
+    }
 
-if (transporter) {
-    transporter.verify((error) => {
-        if (error) {
-            console.error('[EmailService] SMTP connection verification failed:', error.message);
-        } else {
-            console.log('[EmailService] SMTP server is ready to take our messages');
+    for (let attempt = 1; attempt <= retries; attempt++) {
+        try {
+            await transporter.sendMail(mailOptions);
+            return true;
+        } catch (err) {
+            console.error(`[EmailService] Attempt ${attempt} failed:`, err.message);
+            if (attempt === retries) {
+                // Invalidate transporter so a fresh connection is attempted next time
+                activeTransporter = null;
+                throw err;
+            }
+            await new Promise((res) => setTimeout(res, 1000));
         }
-    });
+    }
+    return false;
 }
 
 function verifyConnection() {
     return new Promise((resolve) => {
+        const transporter = getTransporter();
         if (!transporter) {
             return resolve({
                 success: false,
@@ -63,6 +88,7 @@ function verifyConnection() {
         }
         transporter.verify((error) => {
             if (error) {
+                activeTransporter = null;
                 resolve({ success: false, message: error.message });
             } else {
                 resolve({ success: true, message: 'SMTP connection verified successfully.' });
@@ -72,7 +98,8 @@ function verifyConnection() {
 }
 
 async function sendTestEmail(toEmail) {
-    if (!transporter) {
+    const user = process.env.EMAIL_USER;
+    if (!user) {
         throw new Error('Email transporter not configured.');
     }
     const restaurantName = process.env.RESTAURANT_NAME || 'WorldPlate';
@@ -87,8 +114,8 @@ async function sendTestEmail(toEmail) {
         <p style="font-size:12px;color:#999;margin-bottom:0;">You can safely ignore this email.</p>
       </div>`;
 
-    await transporter.sendMail({
-        from: `"${restaurantName}" <${process.env.EMAIL_USER}>`,
+    await safeSendMail({
+        from: `"${restaurantName}" <${user}>`,
         to: toEmail,
         subject: `SMTP Test Mail — ${restaurantName}`,
         html
@@ -153,7 +180,8 @@ function buildEmailShell({ headerBg, headerTitle, headerEmoji, bodyHtml, restaur
 // --- 1. Booking Submitted (sent immediately when user submits) ---
 
 async function sendBookingSubmitted(booking) {
-    if (!transporter) return;
+    const user = process.env.EMAIL_USER;
+    if (!user) return;
     const email = booking.customer_email;
     if (!email) { console.warn('[EmailService] No customer email for booking', booking.booking_id); return; }
 
@@ -198,8 +226,8 @@ async function sendBookingSubmitted(booking) {
     });
 
     try {
-        await transporter.sendMail({
-            from: `"${restaurantName}" <${process.env.EMAIL_USER}>`,
+        await safeSendMail({
+            from: `"${restaurantName}" <${user}>`,
             to: email,
             subject: `Booking Submitted - Your ID: #${booking.booking_id} | ${restaurantName}`,
             html
@@ -213,7 +241,8 @@ async function sendBookingSubmitted(booking) {
 // --- 2. Payment Verified (admin approves) ---
 
 async function sendBookingConfirmation(booking) {
-    if (!transporter) return;
+    const user = process.env.EMAIL_USER;
+    if (!user) return;
     const email = booking.customer_email;
     if (!email) { console.warn('[EmailService] No customer email for booking', booking.booking_id); return; }
 
@@ -253,8 +282,8 @@ async function sendBookingConfirmation(booking) {
     });
 
     try {
-        await transporter.sendMail({
-            from: `"${restaurantName}" <${process.env.EMAIL_USER}>`,
+        await safeSendMail({
+            from: `"${restaurantName}" <${user}>`,
             to: email,
             subject: `Booking Confirmed - #${booking.booking_id} | ${restaurantName}`,
             html
@@ -268,7 +297,8 @@ async function sendBookingConfirmation(booking) {
 // --- 3. Payment Rejected (admin rejects) ---
 
 async function sendBookingRejection(booking, reason) {
-    if (!transporter) return;
+    const user = process.env.EMAIL_USER;
+    if (!user) return;
     const email = booking.customer_email;
     if (!email) { console.warn('[EmailService] No customer email for booking', booking.booking_id); return; }
 
@@ -316,8 +346,8 @@ async function sendBookingRejection(booking, reason) {
     });
 
     try {
-        await transporter.sendMail({
-            from: `"${restaurantName}" <${process.env.EMAIL_USER}>`,
+        await safeSendMail({
+            from: `"${restaurantName}" <${user}>`,
             to: email,
             subject: `Payment Rejected - #${booking.booking_id} | ${restaurantName}`,
             html

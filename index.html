@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorldPlate | Experience the Taste of the World</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230c0c0c'/><text x='50%25' y='50%25' font-family='sans-serif' font-weight='bold' font-size='55' fill='%23ff4500' text-anchor='middle' dominant-baseline='central'>WP</text></svg>">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230c0c0c'/><text x='50%25' y='50%25' font-family='sans-serif' font-weight='bold' font-size='55' fill='%23ff4500' text-anchor='middle' dominant-baseline='central'>WP</text></svg>">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="booking.css">
     <link rel="stylesheet" href="booking-panel.css">
 </head>
+
 <body>
     <!-- Skeleton Loader -->
     <div class="loader-wrapper" id="skeletonLoader">
@@ -43,21 +48,18 @@
             <a href="#" class="logo">World<span>Plate</span></a>
             <nav class="navbar">
                 <div class="close-menu"><i class='bx bx-x'></i></div>
-                <div class="mobile-nav-top-action">
-                    <a href="#" class="btn btn-primary" id="mobileBookTableBtn"><i class='bx bx-calendar-plus'></i> Book A Table</a>
-                </div>
+
                 <a href="#home" class="active">Home</a>
                 <a href="#menu">Menu</a>
                 <a href="#about">About Us</a>
                 <a href="#specials">Specials</a>
                 <a href="#contact">Contact</a>
-                <a href="products.html">All Dishes</a>
+                <a class="product-list" href="products.html">All Dishes</a>
             </nav>
             <div class="header-actions">
+                <a href="#" id="openBookingPanelBtn" class="btn btn-secondary "
+                    style="padding: 0.5rem 1rem; font-size: 0.9rem;"><span>Booking<span class="desktop-only"> Panel</span></span></a>
                 <button id="theme-toggle" class="theme-toggle-btn"><i class='bx bx-moon'></i></button>
-                <button class="contact-us-icon" id="headerContactBtn" title="Support & Complaints"><i class='bx bx-support'></i></button>
-                <a href="#" id="openBookingPanelBtn" class="btn-booking-panel"><i class='bx bx-calendar-check'></i> <span>Booking Panel</span></a>
-                <a href="#" id="openMenuCardBtn" class="btn btn-primary">Menu Card</a>
                 <!-- Mobile Menu Toggle -->
                 <div class="menu-toggle"><i class='bx bx-menu'></i></div>
             </div>
@@ -67,12 +69,13 @@
         <section class="hero" id="home">
             <div class="hero-content">
                 <h1 class="hero-title">Experience the <br><span class="highlight">Taste</span> of the <br>World.</h1>
-                <p class="hero-subtitle">From classic favorites to exotic delights, explore a diverse menu inspired by cuisines from across the globe.</p>
+                <p class="hero-subtitle">From classic favorites to exotic delights, explore a diverse menu inspired by
+                    cuisines from across the globe.</p>
                 <div class="hero-buttons">
                     <a href="products.html" class="btn btn-primary">Learn More</a>
                     <a href="#" class="btn btn-secondary" id="bookTableBtn">Book A Table</a>
                 </div>
-                
+
                 <div class="hero-stats">
                     <div class="stat-box">
                         <div class="stat-info">
@@ -110,7 +113,8 @@
                     <img src="assets/images/dish_1.png" alt="Breakfast Special" class="menu-card-img">
                     <div class="menu-card-content">
                         <h3>Breakfast Specials</h3>
-                        <p>Explore our top-rated food categories, crafted to satisfy every craving! From delicious breakfasts.</p>
+                        <p>Explore our top-rated food categories, crafted to satisfy every craving! From delicious
+                            breakfasts.</p>
                         <div class="price-row">
                             <span class="price">₹1515</span>
                             <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
@@ -122,7 +126,8 @@
                     <img src="assets/images/dish_2.png" alt="Margherita Pizza" class="menu-card-img">
                     <div class="menu-card-content">
                         <h3>Margherita Pizza</h3>
-                        <p>Explore our top-rated food categories, crafted to satisfy every craving! From delicious breakfasts.</p>
+                        <p>Explore our top-rated food categories, crafted to satisfy every craving! From delicious
+                            breakfasts.</p>
                         <div class="price-row">
                             <span class="price">₹1273</span>
                             <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
@@ -134,7 +139,8 @@
                     <img src="assets/images/dish_1.png" alt="Stuffed Ravioli" class="menu-card-img">
                     <div class="menu-card-content">
                         <h3>Stuffed Ravioli</h3>
-                        <p>Explore our top-rated food categories, crafted to satisfy every craving! From delicious breakfasts.</p>
+                        <p>Explore our top-rated food categories, crafted to satisfy every craving! From delicious
+                            breakfasts.</p>
                         <div class="price-row">
                             <span class="price">₹787</span>
                             <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
@@ -146,7 +152,8 @@
                     <img src="assets/images/hero_bowl.png" alt="Spicy Ramen Bowl" class="menu-card-img">
                     <div class="menu-card-content">
                         <h3>Spicy Ramen Bowl</h3>
-                        <p>Authentic ramen with a spicy kick, served with fresh vegetables and perfectly boiled eggs.</p>
+                        <p>Authentic ramen with a spicy kick, served with fresh vegetables and perfectly boiled eggs.
+                        </p>
                         <div class="price-row">
                             <span class="price">₹1047</span>
                             <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
@@ -178,68 +185,71 @@
                     </div>
                 </div>
             </div>
-    <!-- About Us Section -->
-        <section class="about-section" id="about">
-            <div class="section-header">
-                <h2>Our <span class="highlight">Story</span></h2>
-            </div>
-            <div class="about-content">
-                <div class="about-text">
-                    <h3>A Culinary Journey from Puri to the World</h3>
-                    <p>Founded by Sabita Sahoo, WorldPlate started with a simple vision: to bring authentic, global flavors to the heart of Puri, Odisha. We believe that food is more than just sustenance; it's an experience that brings people together.</p>
-                    <p>Every dish is crafted with passion, using locally sourced ingredients fused with international culinary techniques.</p>
-                    <a href="#menu" class="btn btn-primary">Discover Our Menu</a>
+            <!-- About Us Section -->
+            <section class="about-section" id="about">
+                <div class="section-header">
+                    <h2>Our <span class="highlight">Story</span></h2>
                 </div>
-                <div class="about-image">
-                    <img src="assets/images/dish_1.png" alt="Chef Sabita Sahoo's creation">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>A Culinary Journey from Puri to the World</h3>
+                        <p>Founded by Sabita Sahoo, WorldPlate started with a simple vision: to bring authentic, global
+                            flavors to the heart of Puri, Odisha. We believe that food is more than just sustenance;
+                            it's an experience that brings people together.</p>
+                        <p>Every dish is crafted with passion, using locally sourced ingredients fused with
+                            international culinary techniques.</p>
+                        <a href="#menu" class="btn btn-primary">Discover Our Menu</a>
+                    </div>
+                    <div class="about-image">
+                        <img src="assets/images/dish_1.png" alt="Chef Sabita Sahoo's creation">
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Specials Section -->
-        <section class="specials-section" id="specials">
-            <div class="section-header">
-                <h2>Today's <span class="highlight">Specials</span></h2>
-            </div>
-            <div class="menu-grid">
-                <!-- Reuse menu-card styles -->
-                <div class="menu-card">
-                    <img src="assets/images/dish_2.png" alt="Special Dish" class="menu-card-img">
-                    <div class="menu-card-content">
-                        <h3>Chef's Special Pizza</h3>
-                        <p>A secret blend of exotic spices and fresh farm ingredients.</p>
-                        <div class="price-row">
-                            <span class="price">₹603</span>
-                            <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
+            <!-- Specials Section -->
+            <section class="specials-section" id="specials">
+                <div class="section-header">
+                    <h2>Today's <span class="highlight">Specials</span></h2>
+                </div>
+                <div class="menu-grid">
+                    <!-- Reuse menu-card styles -->
+                    <div class="menu-card">
+                        <img src="assets/images/dish_2.png" alt="Special Dish" class="menu-card-img">
+                        <div class="menu-card-content">
+                            <h3>Chef's Special Pizza</h3>
+                            <p>A secret blend of exotic spices and fresh farm ingredients.</p>
+                            <div class="price-row">
+                                <span class="price">₹603</span>
+                                <button class="cart-btn"><i class='bx bx-cart-add'></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Contact Section -->
-        <section class="contact-section" id="contact">
-            <div class="section-header">
-                <h2>Get in <span class="highlight">Touch</span></h2>
-            </div>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <h3>Location</h3>
-                    <p><i class='bx bx-map'></i> Puri, Odisha, India</p>
-                    <h3>Opening Hours</h3>
-                    <p><i class='bx bx-time-five'></i> Mon-Sun: 10:00 AM - 11:00 PM</p>
-                    <h3>Contact Us</h3>
-                    <p><i class='bx bx-phone'></i> +91 123 456 7890</p>
+            <!-- Contact Section -->
+            <section class="contact-section" id="contact">
+                <div class="section-header">
+                    <h2>Get in <span class="highlight">Touch</span></h2>
                 </div>
-                <form id="contactForm" class="contact-form" action="https://api.web3forms.com/submit" method="POST">
-                    <input type="hidden" name="access_key" value="974fd49f-02f6-4816-aed7-9faf64a7a305">
-                    <input type="text" name="name" placeholder="Your Name" required>
-                    <input type="email" name="email" placeholder="Your Email" required>
-                    <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
-            </div>
-        </section>
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <h3>Location</h3>
+                        <p><i class='bx bx-map'></i> Puri, Odisha, India</p>
+                        <h3>Opening Hours</h3>
+                        <p><i class='bx bx-time-five'></i> Mon-Sun: 10:00 AM - 11:00 PM</p>
+                        <h3>Contact Us</h3>
+                        <p><i class='bx bx-phone'></i> +91 123 456 7890</p>
+                    </div>
+                    <form id="contactForm" class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+                        <input type="hidden" name="access_key" value="974fd49f-02f6-4816-aed7-9faf64a7a305">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </section>
     </main>
 
     <!-- Footer -->
@@ -247,8 +257,7 @@
         <p>&copy; 2026 WorldPlate by Snigdhendu Chhotaray. All Rights Reserved.</p>
     </footer>
 
-    <!-- Scroll to Top Button -->
-    <button id="scrollTopBtn"><i class='bx bx-up-arrow-alt'></i></button>
+
 
     <!-- Menu Card Modal -->
     <div class="menu-modal-overlay" id="menuCardModal">
@@ -436,12 +445,17 @@
             </div>
         </div>
     </div>
-        </div>
+    </div>
     </div>
 
     <!-- Booking Modal -->
     <div class="booking-modal-overlay" id="bookingModal">
         <div class="booking-modal"></div>
+    </div>
+
+    <!-- Booking Panel Modal -->
+    <div class="bp-overlay" id="bookingPanelModal">
+        <div class="bp-modal"></div>
     </div>
 
     <!-- Floating Contact Support Button -->
@@ -455,14 +469,16 @@
             <div class="contact-modal-header">
                 <div>
                     <h3>Support & <span>Complaints</span></h3>
-                    <p class="contact-modal-subtitle">Report a payment problem or technical issue — we are here to help!</p>
+                    <p class="contact-modal-subtitle">Report a payment problem or technical issue — we are here to help!
+                    </p>
                 </div>
                 <button class="contact-close-btn" id="closeContactModalBtn">&times;</button>
             </div>
 
             <!-- Direct Actions: Email & Call -->
             <div class="contact-direct-actions">
-                <a href="mailto:snigdhenduchhotaray@gmail.com?subject=WorldPlate%20Payment%20%2F%20Technical%20Issue" class="contact-direct-btn email-btn">
+                <a href="mailto:snigdhenduchhotaray@gmail.com?subject=WorldPlate%20Payment%20%2F%20Technical%20Issue"
+                    class="contact-direct-btn email-btn">
                     <i class='bx bx-envelope'></i> Email Us
                 </a>
                 <a href="tel:7751080146" class="contact-direct-btn call-btn">
@@ -503,7 +519,8 @@
 
                 <div class="contact-form-group">
                     <label for="compMessage">Complaint Details / Message *</label>
-                    <textarea id="compMessage" name="message" rows="4" placeholder="Describe your problem or complaint in detail..." required></textarea>
+                    <textarea id="compMessage" name="message" rows="4"
+                        placeholder="Describe your problem or complaint in detail..." required></textarea>
                 </div>
 
                 <button type="submit" class="contact-submit-btn" id="compSubmitBtn">
@@ -522,4 +539,5 @@
     <script src="booking.js"></script>
     <script src="booking-panel.js"></script>
 </body>
+
 </html>

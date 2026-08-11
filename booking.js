@@ -337,8 +337,8 @@
                 <div class="booking-form-group">
                     <label>Available Time Slots</label>
                     ${state.loading ? '<div class="booking-loading"><div class="booking-spinner"></div> Checking availability...</div>' :
-                        slots ? `<div class="booking-chip-grid">${slots}</div>` :
-                        '<div class="booking-empty-msg">Sorry, no tables are available for this time slot.</div>'}
+                slots ? `<div class="booking-chip-grid">${slots}</div>` :
+                    '<div class="booking-empty-msg">Sorry, no tables are available for this time slot.</div>'}
                 </div>
             </div>
         `;
@@ -346,8 +346,8 @@
 
     function renderPickTableStep() {
         const available = state.tables.filter((t) => t.available);
-        const pending   = state.tables.filter((t) => !t.available && t.status === 'Pending');
-        const booked    = state.tables.filter((t) => !t.available && t.status !== 'Pending');
+        const pending = state.tables.filter((t) => !t.available && t.status === 'Pending');
+        const booked = state.tables.filter((t) => !t.available && t.status !== 'Pending');
 
         const tableCards = state.tables.map((t) => {
             if (t.available) {
@@ -390,11 +390,11 @@
                 ${state.loading ? '<div class="booking-loading"><div class="booking-spinner"></div> Loading tables...</div>' : `
                     ${legend}
                     ${state.tables.length > 0
-                        ? `<div class="table-map">${tableCards}</div>`
-                        : '<div class="booking-empty-msg">Sorry, no tables are available for this time slot.</div>'}
+                    ? `<div class="table-map">${tableCards}</div>`
+                    : '<div class="booking-empty-msg">Sorry, no tables are available for this time slot.</div>'}
                     ${available.length === 0 && state.tables.length > 0
-                        ? '<div class="booking-empty-msg" style="margin-top:0.75rem">All tables are occupied for this slot. Please pick a different time.</div>'
-                        : ''}
+                    ? '<div class="booking-empty-msg" style="margin-top:0.75rem">All tables are occupied for this slot. Please pick a different time.</div>'
+                    : ''}
                 `}
             </div>
         `;

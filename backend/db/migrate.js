@@ -69,6 +69,10 @@ const SCHEMA_STATEMENTS = [
         key TEXT PRIMARY KEY,
         value TEXT NOT NULL,
         updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    )`,
+    `CREATE TABLE IF NOT EXISTS admin (
+        id TEXT PRIMARY KEY,
+        password TEXT NOT NULL
     )`
 ];
 
@@ -141,6 +145,19 @@ async function migrate() {
         console.log('[Migrate] Settings seeded.');
     } else {
         console.log('[Migrate] settings already has data, skipping seed.');
+    }
+
+    // 4. Seed admin (only if empty)
+    const adminCount = await db.execute('SELECT COUNT(*) AS count FROM admin');
+    if (Number(adminCount.rows[0].count) === 0) {
+        console.log('[Migrate] Seeding default admin user...');
+        await db.execute({
+            sql: `INSERT INTO admin (id, password) VALUES (?, ?)`,
+            args: ['admin', 'admin123']
+        });
+        console.log('[Migrate] Admin user seeded.');
+    } else {
+        console.log('[Migrate] admin table already has data, skipping seed.');
     }
 
     console.log('[Migrate] Migration complete!');

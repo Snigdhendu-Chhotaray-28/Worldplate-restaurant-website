@@ -57,3 +57,9 @@ CREATE TABLE IF NOT EXISTS settings (
     value TEXT NOT NULL,
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS admin (
+    id TEXT PRIMARY KEY,
+    password TEXT NOT NULL
+);
+

@@ -61,6 +61,16 @@ function seedDatabase(db) {
         `).run();
         console.log('[DB] Seeded default settings.');
     }
+
+    try {
+        const adminCount = db.prepare('SELECT COUNT(*) AS count FROM admin').get().count;
+        if (adminCount === 0) {
+            db.prepare('INSERT INTO admin (id, password) VALUES (?, ?)').run('admin', 'admin123');
+            console.log('[DB] Seeded default admin user.');
+        }
+    } catch (err) {
+        console.warn('[DB] Admin table check skipped:', err.message);
+    }
 }
 
 module.exports = { seedDatabase };

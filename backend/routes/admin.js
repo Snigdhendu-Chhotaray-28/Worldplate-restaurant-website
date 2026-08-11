@@ -14,6 +14,42 @@ const {
 
 
 const router = express.Router();
+
+router.post('/login', async (req, res) => {
+    try {
+        const { id, password } = req.body;
+        if (!id || !password) {
+            return res.status(400).json({ error: 'Admin ID and Password are required.' });
+        }
+
+        // 1. Fetch admin ID from Admin table
+        const result = await db.execute({
+            sql: 'SELECT id, password FROM admin WHERE id = ?',
+            args: [String(id).trim()]
+        });
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({ error: 'Admin ID does not exist.' });
+        }
+
+        // 2. Fetch the password of the ID and verify
+        const adminRow = result.rows[0];
+        if (String(adminRow.password) !== String(password)) {
+            return res.status(401).json({ error: 'Incorrect Admin Password.' });
+        }
+
+        // 3. Verification passed
+        return res.json({
+            message: 'Login successful.',
+            token: adminRow.password,
+            admin_id: adminRow.id
+        });
+    } catch (error) {
+        console.error('[Admin Login Error]', error);
+        return res.status(500).json({ error: 'Failed to verify admin credentials from database.' });
+    }
+});
+
 router.use(requireAdmin);
 
 const uploadDir = path.join(__dirname, '..', 'uploads');

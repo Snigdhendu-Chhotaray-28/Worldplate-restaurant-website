@@ -25,38 +25,38 @@ app.use(helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },
     contentSecurityPolicy: {
         directives: {
-            defaultSrc:  ["'self'"],
-            scriptSrc:   [
+            defaultSrc: ["'self'"],
+            scriptSrc: [
                 "'self'",
                 "'unsafe-inline'",          // inline scripts in HTML
                 "https://checkout.razorpay.com",
                 "https://cdnjs.cloudflare.com",
                 "https://unpkg.com"
             ],
-            styleSrc:    [
+            styleSrc: [
                 "'self'",
                 "'unsafe-inline'",
                 "https://fonts.googleapis.com",
                 "https://unpkg.com",
                 "https://cdnjs.cloudflare.com"
             ],
-            fontSrc:     [
+            fontSrc: [
                 "'self'",
                 "https://fonts.gstatic.com",
                 "https://unpkg.com",
                 "https://cdnjs.cloudflare.com",
                 "data:"
             ],
-            imgSrc:      ["'self'", "data:", "https:", "blob:"],
-            connectSrc:  [
+            imgSrc: ["'self'", "data:", "https:", "blob:"],
+            connectSrc: [
                 "'self'",
                 "https://api.razorpay.com",
                 "https://lumberjack.razorpay.com",
                 "https://lumberjack-dx.razorpay.com"
             ],
-            frameSrc:    ["https://api.razorpay.com"],
-            workerSrc:   ["'self'", "blob:"],
-            objectSrc:   ["'none'"],
+            frameSrc: ["https://api.razorpay.com"],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: ["'none'"],
             upgradeInsecureRequests: []
         }
     }

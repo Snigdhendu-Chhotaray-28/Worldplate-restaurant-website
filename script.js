@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
     initThemeToggle();
     initMenuCarousel();
     initMobileMenu();
-    initScrollToTop();
     initProductSearch();
     initMenuCardModal();
     initContactForm();
     initContactModal();
-    
+
     // Wait for everything to load (including images)
     window.addEventListener("load", () => {
         const loader = document.getElementById("skeletonLoader");
@@ -15,11 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Fade out loader
         loader.style.opacity = "0";
-        
+
         setTimeout(() => {
             loader.style.display = "none";
             mainContent.style.visibility = "visible";
-            
+
             // Start GSAP Animations after loader is hidden
             initAnimations();
         }, 500); // Wait for fade transition
@@ -32,19 +31,19 @@ function initAnimations() {
 
     // Animate Header
     tl.from(".logo", { y: -20, opacity: 0, duration: 0.6, ease: "power3.out" })
-      .from(".navbar a", { y: -20, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power3.out" }, "-=0.4")
-      .from(".header-actions", { y: -20, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.4");
+        .from(".navbar a", { y: -20, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power3.out" }, "-=0.4")
+        .from(".header-actions", { y: -20, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.4");
 
     // Animate Hero Content
     tl.from(".hero-title", { y: 50, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.2")
-      .from(".hero-subtitle", { y: 30, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.6")
-      .fromTo(".hero-buttons .btn", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out", clearProps: "all" }, "-=0.4")
-      .from(".hero-stats", { x: -30, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.3");
+        .from(".hero-subtitle", { y: 30, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.6")
+        .fromTo(".hero-buttons .btn", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out", clearProps: "all" }, "-=0.4")
+        .from(".hero-stats", { x: -30, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.3");
 
     // Animate Hero Image Container
     tl.from(".hero-circle-bg", { scale: 0, opacity: 0, duration: 1, ease: "back.out(1.7)" }, "-=1")
-      .from(".hero-img", { scale: 0.8, opacity: 0, rotation: 15, duration: 1, ease: "power3.out" }, "-=0.8")
-      .from(".floating-badge", { y: 30, opacity: 0, duration: 0.6, ease: "back.out(1.5)" }, "-=0.5");
+        .from(".hero-img", { scale: 0.8, opacity: 0, rotation: 15, duration: 1, ease: "power3.out" }, "-=0.8")
+        .from(".floating-badge", { y: 30, opacity: 0, duration: 0.6, ease: "back.out(1.5)" }, "-=0.5");
 
     // ScrollTrigger setup for Menu Section (optional, if we had it loaded, but basic animation works)
     gsap.from(".section-header", {
@@ -80,7 +79,7 @@ function initThemeToggle() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
         body.classList.add(savedTheme);
-        if(savedTheme === 'light-theme') {
+        if (savedTheme === 'light-theme') {
             icon.classList.replace('bx-moon', 'bx-sun');
         }
     }
@@ -110,7 +109,7 @@ function initMobileMenu() {
         closeMenu.addEventListener('click', () => {
             navbar.classList.remove('active');
         });
-        
+
         // Close menu when clicking a link
         const links = navbar.querySelectorAll('a');
         links.forEach(link => {
@@ -185,7 +184,7 @@ function initMenuCarousel() {
         const x = e.pageX - slider.offsetLeft;
         const walk = (x - startX) * 2; // Scroll-fast multiplier
         slider.scrollLeft = scrollLeft - walk;
-        
+
         // Infinite drag logic
         if (slider.scrollLeft >= (slider.scrollWidth / 2)) {
             slider.scrollLeft -= (slider.scrollWidth / 2);
@@ -199,36 +198,16 @@ function initMenuCarousel() {
     });
 }
 
-function initScrollToTop() {
-    const scrollBtn = document.getElementById("scrollTopBtn");
-    if (!scrollBtn) return;
-
-    window.addEventListener("scroll", () => {
-        if (window.scrollY > 300) {
-            scrollBtn.classList.add("show");
-        } else {
-            scrollBtn.classList.remove("show");
-        }
-    });
-
-    scrollBtn.addEventListener("click", () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    });
-}
-
 function initProductSearch() {
     const searchInput = document.getElementById('productSearchInput');
     const recommendationsList = document.getElementById('searchRecommendations');
     const notFoundMessage = document.getElementById('notFoundMessage');
-    
+
     if (!searchInput) return;
 
     // We get products here so we have the initial list
     const products = document.querySelectorAll('.product-item');
-    if(products.length === 0) return;
+    if (products.length === 0) return;
 
     const productNames = Array.from(products).map(product => {
         return {
@@ -240,10 +219,10 @@ function initProductSearch() {
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
         recommendationsList.innerHTML = '';
-        
+
         if (query.length >= 3) {
             const matches = productNames.filter(p => p.name.toLowerCase().includes(query));
-            
+
             if (matches.length > 0) {
                 recommendationsList.style.display = 'block';
                 matches.forEach(match => {
@@ -262,7 +241,7 @@ function initProductSearch() {
         } else {
             recommendationsList.style.display = 'none';
             // If user clears the input, show all products
-            if(query.length === 0) {
+            if (query.length === 0) {
                 resetProducts();
             }
         }
@@ -272,15 +251,15 @@ function initProductSearch() {
         if (e.key === 'Enter') {
             const query = searchInput.value.toLowerCase().trim();
             recommendationsList.style.display = 'none';
-            
-            if(query.length === 0) {
+
+            if (query.length === 0) {
                 resetProducts();
                 return;
             }
 
             const exactMatch = productNames.find(p => p.name.toLowerCase() === query);
             const includesMatch = productNames.filter(p => p.name.toLowerCase().includes(query));
-            
+
             if (exactMatch) {
                 showOnlyProduct(exactMatch.name);
             } else if (includesMatch.length === 1) {
@@ -355,7 +334,7 @@ function initMenuCardModal() {
 function initContactForm() {
     const form = document.getElementById('contactForm');
     if (!form) return;
-    
+
     const submitBtn = form.querySelector('button[type="submit"]');
 
     form.addEventListener('submit', async (e) => {

@@ -277,22 +277,49 @@
         loadSettings();
     }
 
-    document.getElementById('adminLoginBtn').addEventListener('click', async () => {
-        adminKey = document.getElementById('adminKeyInput').value.trim();
-        if (!adminKey) return;
+    async function doLogin() {
+        const adminId = (document.getElementById('adminIdInput')?.value || '').trim();
+        const adminPassword = (document.getElementById('adminPasswordInput')?.value || '').trim();
+        const errorEl = document.getElementById('loginError');
+        errorEl.style.display = 'none';
+
+        if (!adminId || !adminPassword) {
+            errorEl.textContent = 'Please enter both Admin ID and Password.';
+            errorEl.style.display = 'block';
+            return;
+        }
 
         try {
-            await adminFetch('/settings');
+            const res = await fetch(`${API_BASE}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: adminId, password: adminPassword })
+            });
+
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                throw new Error(data.error || 'Login failed.');
+            }
+
+            adminKey = data.token || adminPassword;
             sessionStorage.setItem('adminKey', adminKey);
             showDashboard();
         } catch (err) {
             if (err.message && err.message.includes('verify that the backend is running')) {
-                document.getElementById('loginError').textContent = 'Cannot connect to backend server. Please ensure the backend is running.';
+                errorEl.textContent = 'Cannot connect to backend server. Please ensure the backend is running.';
             } else {
-                document.getElementById('loginError').textContent = 'Invalid admin key.';
+                errorEl.textContent = err.message || 'Invalid admin ID or password.';
             }
-            document.getElementById('loginError').style.display = 'block';
+            errorEl.style.display = 'block';
         }
+    }
+
+    document.getElementById('adminLoginBtn').addEventListener('click', doLogin);
+
+    ['adminIdInput', 'adminPasswordInput'].forEach((id) => {
+        document.getElementById(id)?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') doLogin();
+        });
     });
 
     document.getElementById('adminLogoutBtn').addEventListener('click', () => {
