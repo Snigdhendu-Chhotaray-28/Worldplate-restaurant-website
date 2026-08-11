@@ -27,7 +27,8 @@
     let modalEl, overlayEl;
 
     function formatPrice(amount) {
-        return `₹${Number(amount).toLocaleString('en-IN')}`;
+        const num = Number(amount);
+        return `₹${Number.isInteger(num) ? num : num.toFixed(2)}`;
     }
 
     function formatDateDisplay(dateStr) {

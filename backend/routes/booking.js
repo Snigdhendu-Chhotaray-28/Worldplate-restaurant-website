@@ -151,7 +151,7 @@ router.post('/payments/order', async (req, res) => {
                 'Authorization': 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64')
             },
             body: JSON.stringify({
-                amount: amount * 100, // paise
+                amount: Math.round(amount * 100), // paise (handles decimal amounts like 1.50 or 2.50)
                 currency: 'INR',
                 receipt: `receipt_booking_${Date.now()}`
             })
@@ -197,7 +197,17 @@ router.post('/bookings', async (req, res) => {
             return res.status(400).json({ error: 'Razorpay payment parameters are required.' });
         }
 
-        // Verify Razorpay Signature
+        // Replay Attack Prevention: Verify this payment transaction hasn't already been processed
+        const existingPayment = await db.execute({
+            sql: 'SELECT id FROM bookings WHERE utr_number = ?',
+            args: [razorpay_payment_id]
+        });
+
+        if (existingPayment.rows.length > 0) {
+            return res.status(400).json({ error: 'This payment transaction has already been processed.' });
+        }
+
+        // Verify Razorpay Signature (Timing-safe comparison)
         const secret = process.env.RAZORPAY_KEY_SECRET;
         if (!secret) {
             return res.status(500).json({ error: 'Razorpay secret is not configured on the server.' });
@@ -207,8 +217,11 @@ router.post('/bookings', async (req, res) => {
         hmac.update(`${razorpay_order_id}|${razorpay_payment_id}`);
         const generated_signature = hmac.digest('hex');
 
-        if (generated_signature !== razorpay_signature) {
-            console.warn('[BookingRoute] Signature verification failed. Expected:', generated_signature, 'Got:', razorpay_signature);
+        const sigBuf = Buffer.from(String(razorpay_signature), 'utf8');
+        const genBuf = Buffer.from(String(generated_signature), 'utf8');
+
+        if (sigBuf.length !== genBuf.length || !crypto.timingSafeEqual(sigBuf, genBuf)) {
+            console.warn('[BookingRoute] Signature verification failed.');
             return res.status(400).json({ error: 'Payment verification failed. Invalid signature.' });
         }
 

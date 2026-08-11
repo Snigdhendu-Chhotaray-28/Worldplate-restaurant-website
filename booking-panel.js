@@ -14,7 +14,8 @@
     }
 
     function formatPrice(amount) {
-        return `₹${Number(amount).toLocaleString('en-IN')}`;
+        const num = Number(amount);
+        return `₹${Number.isInteger(num) ? num : num.toFixed(2)}`;
     }
 
     async function apiFetch(path) {

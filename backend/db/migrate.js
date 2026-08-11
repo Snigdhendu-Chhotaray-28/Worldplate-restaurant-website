@@ -73,10 +73,10 @@ const SCHEMA_STATEMENTS = [
 ];
 
 const DEFAULT_TABLE_TYPES = [
-    { slug: '2-seater',    name: '2-Seater',    capacity: 2,  price_1h: 399,  price_2h: 499,  sort_order: 1, tables: 2 },
-    { slug: '4-seater',    name: '4-Seater',    capacity: 4,  price_1h: 599,  price_2h: 799,  sort_order: 2, tables: 4 },
-    { slug: '6-seater',    name: '6-Seater',    capacity: 6,  price_1h: 999,  price_2h: 1299, sort_order: 3, tables: 2 },
-    { slug: 'family-pack', name: 'Family Pack', capacity: 10, price_1h: 1499, price_2h: 1999, sort_order: 4, tables: 1 }
+    { slug: '2-seater',    name: '2-Seater',    capacity: 2,  price_1h: 1, price_2h: 1.5, sort_order: 1, tables: 2 },
+    { slug: '4-seater',    name: '4-Seater',    capacity: 4,  price_1h: 2, price_2h: 2.5, sort_order: 2, tables: 4 },
+    { slug: '6-seater',    name: '6-Seater',    capacity: 6,  price_1h: 3, price_2h: 4,   sort_order: 3, tables: 2 },
+    { slug: 'family-pack', name: 'Family Pack', capacity: 10, price_1h: 4, price_2h: 5,   sort_order: 4, tables: 1 }
 ];
 
 const DEFAULT_SETTINGS = [
@@ -94,6 +94,16 @@ async function migrate() {
         await db.execute(sql);
     }
     console.log('[Migrate] Schema applied.');
+
+    // Update prices for existing table types
+    console.log('[Migrate] Updating prices for table types...');
+    for (const type of DEFAULT_TABLE_TYPES) {
+        await db.execute({
+            sql: `UPDATE table_types SET price_1h = ?, price_2h = ? WHERE slug = ?`,
+            args: [type.price_1h, type.price_2h, type.slug]
+        });
+    }
+    console.log('[Migrate] Table type prices updated.');
 
     // 2. Seed table_types + restaurant_tables (only if empty)
     const typeCount = await db.execute('SELECT COUNT(*) AS count FROM table_types');

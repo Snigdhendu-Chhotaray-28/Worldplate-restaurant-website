@@ -83,7 +83,17 @@ const apiLimiter = rateLimit({
     legacyHeaders: false
 });
 
+const bookingLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 30, // Max 30 order/booking attempts per 15 mins per IP
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many booking attempts. Please try again later.' }
+});
+
 app.use('/api', apiLimiter);
+app.use('/api/payments/order', bookingLimiter);
+app.use('/api/bookings', bookingLimiter);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

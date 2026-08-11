@@ -87,6 +87,15 @@ function validateCustomerName(name) {
     return cleaned.length >= 2 && cleaned.length <= 100 && /^[\p{L}\p{M}\s'.-]+$/u.test(cleaned);
 }
 
+function sanitizeHtml(str) {
+    return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 module.exports = {
     OPEN_HOUR,
     CLOSE_HOUR,
@@ -102,5 +111,6 @@ module.exports = {
     getPriceForDuration,
     generateTimeSlots,
     validateUtr,
-    validateCustomerName
+    validateCustomerName,
+    sanitizeHtml
 };
