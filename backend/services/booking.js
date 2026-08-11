@@ -59,7 +59,7 @@ async function createBooking(payload) {
     }
 
     if (!validateUtr(utrNumber)) {
-        return { error: 'Please enter a valid UTR / transaction number (6–30 alphanumeric characters).', status: 400 };
+        return { error: 'Invalid payment transaction ID.', status: 400 };
     }
 
     const emailStr = (customerEmail || '').trim().toLowerCase();

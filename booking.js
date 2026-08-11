@@ -213,7 +213,7 @@
                 modal: {
                     ondismiss: function () {
                         state.loading = false;
-                        setError('Payment checkout cancelled.');
+                        setError('Payment checkout cancelled. You can try again when ready.');
                     }
                 },
                 handler: async function (response) {
@@ -222,7 +222,7 @@
                         clearError();
                         render();
 
-                        // 3. Send payment proof and details to confirm booking
+                        // 3. Send payment details to confirm booking automatically
                         const data = await apiFetch('/bookings', {
                             method: 'POST',
                             body: JSON.stringify({
@@ -240,7 +240,7 @@
                         });
 
                         state.bookingResult = data.booking;
-                        goToStep(4); // index of 'confirm' step in ['table', 'datetime', 'pick-table', 'summary', 'confirm']
+                        goToStep(4); // index of 'confirm' step
                     } catch (err) {
                         setError(err.message);
                     } finally {
@@ -251,6 +251,11 @@
             };
 
             const rzp = new Razorpay(options);
+            rzp.on('payment.failed', function (resp) {
+                state.loading = false;
+                const failureMsg = resp.error?.description || 'Payment failed. Please try again.';
+                setError(`Payment Failed: ${failureMsg}`);
+            });
             rzp.open();
         } catch (err) {
             setError(err.message);

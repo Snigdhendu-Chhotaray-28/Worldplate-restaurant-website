@@ -79,7 +79,7 @@ function generateTimeSlots(durationHours) {
 
 function validateUtr(utr) {
     const cleaned = String(utr || '').trim();
-    return cleaned.length >= 6 && cleaned.length <= 30 && /^[A-Za-z0-9]+$/.test(cleaned);
+    return cleaned.length >= 6 && cleaned.length <= 40 && /^[A-Za-z0-9_-]+$/.test(cleaned);
 }
 
 function validateCustomerName(name) {
