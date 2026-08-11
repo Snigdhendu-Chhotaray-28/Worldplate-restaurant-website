@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: worldplate-booking-api
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: RESTAURANT_NAME
+        value: WorldPlate
+      - key: RESTAURANT_OPEN_HOUR
+        value: "10"
+      - key: RESTAURANT_CLOSE_HOUR
+        value: "23"
+      - key: TIMEZONE
+        value: Asia/Kolkata
+      - key: TURSO_DATABASE_URL
+        sync: false
+      - key: TURSO_AUTH_TOKEN
+        sync: false
+      - key: ADMIN_API_KEY
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false

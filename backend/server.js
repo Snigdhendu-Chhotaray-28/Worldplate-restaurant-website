@@ -22,12 +22,51 @@ const allowedOrigins = (process.env.CORS_ORIGIN || '')
     .filter(Boolean);
 
 app.use(helmet({
-    crossOriginResourcePolicy: { policy: 'cross-origin' }
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc:  ["'self'"],
+            scriptSrc:   [
+                "'self'",
+                "'unsafe-inline'",          // inline scripts in HTML
+                "https://checkout.razorpay.com",
+                "https://cdnjs.cloudflare.com",
+                "https://unpkg.com"
+            ],
+            styleSrc:    [
+                "'self'",
+                "'unsafe-inline'",
+                "https://fonts.googleapis.com",
+                "https://unpkg.com",
+                "https://cdnjs.cloudflare.com"
+            ],
+            fontSrc:     [
+                "'self'",
+                "https://fonts.gstatic.com",
+                "https://unpkg.com",
+                "https://cdnjs.cloudflare.com",
+                "data:"
+            ],
+            imgSrc:      ["'self'", "data:", "https:", "blob:"],
+            connectSrc:  [
+                "'self'",
+                "https://api.razorpay.com",
+                "https://lumberjack.razorpay.com",
+                "https://lumberjack-dx.razorpay.com"
+            ],
+            frameSrc:    ["https://api.razorpay.com"],
+            workerSrc:   ["'self'", "blob:"],
+            objectSrc:   ["'none'"],
+            upgradeInsecureRequests: []
+        }
+    }
 }));
+
+app.set('trust proxy', 1);
 
 app.use(cors({
     origin(origin, callback) {
-        if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+        if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));

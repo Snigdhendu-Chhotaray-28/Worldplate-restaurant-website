@@ -42,22 +42,21 @@
     }
 
     async function apiFetch(path, options = {}) {
+        let res;
         try {
-            const res = await fetch(`${API_BASE}${path}`, {
+            res = await fetch(`${API_BASE}${path}`, {
                 headers: { 'Content-Type': 'application/json', ...options.headers },
                 ...options
             });
-            const data = await res.json().catch(() => ({}));
-            if (!res.ok) {
-                throw new Error(data.error || 'Something went wrong. Please try again.');
-            }
-            return data;
-        } catch (err) {
-            if (err.message === 'Failed to fetch' || err.name === 'TypeError') {
-                throw new Error('Cannot connect to the server. Please verify that the backend is running.');
-            }
-            throw err;
+        } catch (networkErr) {
+            // Server is not running or unreachable
+            throw new Error('Cannot connect to the server. Please make sure the backend is running.');
         }
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+            throw new Error(data.error || 'Something went wrong. Please try again.');
+        }
+        return data;
     }
 
     function setError(msg) {
