@@ -1,4 +1,4 @@
-﻿const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 
 // --- Helpers ---
 
@@ -42,6 +42,58 @@ function createTransporter() {
 }
 
 const transporter = createTransporter();
+
+if (transporter) {
+    transporter.verify((error) => {
+        if (error) {
+            console.error('[EmailService] SMTP connection verification failed:', error.message);
+        } else {
+            console.log('[EmailService] SMTP server is ready to take our messages');
+        }
+    });
+}
+
+function verifyConnection() {
+    return new Promise((resolve) => {
+        if (!transporter) {
+            return resolve({
+                success: false,
+                message: 'Gmail credentials not configured. Please set EMAIL_USER and EMAIL_PASS in your environment/Render dashboard.'
+            });
+        }
+        transporter.verify((error) => {
+            if (error) {
+                resolve({ success: false, message: error.message });
+            } else {
+                resolve({ success: true, message: 'SMTP connection verified successfully.' });
+            }
+        });
+    });
+}
+
+async function sendTestEmail(toEmail) {
+    if (!transporter) {
+        throw new Error('Email transporter not configured.');
+    }
+    const restaurantName = process.env.RESTAURANT_NAME || 'WorldPlate';
+    const html = `
+      <div style="font-family:Arial,sans-serif;padding:20px;background:#f9f9f9;border-radius:12px;max-width:500px;margin:20px auto;border:1px solid #eee;">
+        <h2 style="color:#ff4500;margin-top:0;">WorldPlate SMTP Test</h2>
+        <p>This is a test email sent from the <strong>${restaurantName}</strong> Booking System.</p>
+        <p style="background:#fff;padding:12px;border-left:4px solid #ff4500;font-family:monospace;font-size:14px;color:#333;">
+          Status: Working Successfully<br>
+          Timestamp: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+        </p>
+        <p style="font-size:12px;color:#999;margin-bottom:0;">You can safely ignore this email.</p>
+      </div>`;
+
+    await transporter.sendMail({
+        from: `"${restaurantName}" <${process.env.EMAIL_USER}>`,
+        to: toEmail,
+        subject: `SMTP Test Mail — ${restaurantName}`,
+        html
+    });
+}
 
 // --- Shared HTML email shell ---
 
@@ -276,4 +328,11 @@ async function sendBookingRejection(booking, reason) {
     }
 }
 
-module.exports = { sendBookingSubmitted, sendBookingConfirmation, sendBookingRejection };
+module.exports = {
+    sendBookingSubmitted,
+    sendBookingConfirmation,
+    sendBookingRejection,
+    verifyConnection,
+    sendTestEmail
+};
+

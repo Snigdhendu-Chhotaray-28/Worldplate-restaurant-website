@@ -5,7 +5,13 @@ const multer = require('multer');
 const db = require('../db/database');
 const { requireAdmin } = require('../middleware/auth');
 const { cleanupExpiredBookings } = require('../services/cleanup');
-const { sendBookingConfirmation, sendBookingRejection } = require('../services/emailService');
+const {
+    sendBookingConfirmation,
+    sendBookingRejection,
+    verifyConnection,
+    sendTestEmail
+} = require('../services/emailService');
+
 
 const router = express.Router();
 router.use(requireAdmin);
@@ -277,5 +283,53 @@ router.post('/cleanup/run', async (req, res) => {
         res.status(500).json({ error: 'Cleanup failed.' });
     }
 });
+
+router.get('/email/status', async (req, res) => {
+    try {
+        const user = process.env.EMAIL_USER;
+        const hasCredentials = !!(
+            user && user !== 'your_gmail@gmail.com' &&
+            process.env.EMAIL_PASS && process.env.EMAIL_PASS !== 'your_16_char_app_password' &&
+            process.env.EMAIL_PASS !== 'PASTE_YOUR_16_CHAR_APP_PASSWORD_HERE'
+        );
+
+        if (!hasCredentials) {
+            return res.json({
+                configured: false,
+                verified: false,
+                user: user || null,
+                message: 'Gmail credentials not configured.'
+            });
+        }
+
+        const verification = await verifyConnection();
+
+        res.json({
+            configured: true,
+            verified: verification.success,
+            user,
+            message: verification.message
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to check email status.' });
+    }
+});
+
+router.post('/email/test', async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return res.status(400).json({ error: 'Please provide a valid recipient email address.' });
+        }
+
+        await sendTestEmail(email);
+        res.json({ message: `Test email sent successfully to ${email}` });
+    } catch (error) {
+        console.error('[Admin API] Test email failed:', error);
+        res.status(500).json({ error: error.message || 'Failed to send test email.' });
+    }
+});
+
 
 module.exports = router;

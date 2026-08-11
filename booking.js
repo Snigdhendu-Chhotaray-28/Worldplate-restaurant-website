@@ -2,7 +2,7 @@
     const API_BASE = window.BOOKING_API_URL ||
         (window.location.port === '3001' ? '/api' : 'http://localhost:3001/api');
 
-    const STEPS = ['table', 'datetime', 'pick-table', 'summary', 'payment', 'utr', 'confirm'];
+    const STEPS = ['table', 'datetime', 'pick-table', 'summary', 'confirm'];
     const TOTAL_STEPS = STEPS.length - 1;
 
     const state = {
@@ -18,12 +18,11 @@
         price: 0,
         customerName: '',
         customerEmail: '',
-        utrNumber: '',
-        paymentConfig: null,
         bookingResult: null,
         loading: false,
         error: ''
     };
+
 
     let modalEl, overlayEl;
 
@@ -181,62 +180,85 @@
         }
     }
 
-    async function loadPaymentConfig() {
-        try {
-            state.paymentConfig = await apiFetch('/payment-config');
-        } catch (err) {
-            setError(err.message);
-        }
-    }
-
-    async function submitBooking() {
-        if (!state.customerName.trim()) {
-            setError('Please enter your full name.');
-            return;
-        }
-        if (!state.customerEmail.trim()) {
-            setError('Please enter your Gmail / email address.');
-            return;
-        }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.customerEmail.trim())) {
-            setError('Please enter a valid email address.');
-            return;
-        }
-        if (!state.utrNumber.trim()) {
-            setError('UTR / Transaction number is required.');
-            return;
-        }
-
+    async function handlePaymentAndBooking() {
         state.loading = true;
         clearError();
         render();
 
         try {
-            const data = await apiFetch('/bookings', {
+            // 1. Create Razorpay Order from backend
+            const orderData = await apiFetch('/payments/order', {
                 method: 'POST',
                 body: JSON.stringify({
                     table_type_id: state.selectedType.id,
-                    table_number: state.selectedTable,
-                    booking_date: state.date,
-                    start_time: state.startTime,
-                    duration: state.duration,
-                    customer_name: state.customerName.trim(),
-                    customer_email: state.customerEmail.trim().toLowerCase(),
-                    utr_number: state.utrNumber.trim()
+                    duration: state.duration
                 })
             });
-            state.bookingResult = data.booking;
-            goToStep(6);
+
+            // 2. Open Razorpay Checkout modal
+            const options = {
+                key: orderData.key_id,
+                amount: orderData.amount,
+                currency: "INR",
+                name: orderData.restaurant_name || "WorldPlate",
+                description: `Table Booking — ${state.selectedType.name}`,
+                order_id: orderData.order_id,
+                prefill: {
+                    name: state.customerName.trim(),
+                    email: state.customerEmail.trim().toLowerCase()
+                },
+                theme: {
+                    color: "#ff4500"
+                },
+                modal: {
+                    ondismiss: function () {
+                        state.loading = false;
+                        setError('Payment checkout cancelled.');
+                    }
+                },
+                handler: async function (response) {
+                    try {
+                        state.loading = true;
+                        clearError();
+                        render();
+
+                        // 3. Send payment proof and details to confirm booking
+                        const data = await apiFetch('/bookings', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                table_type_id: state.selectedType.id,
+                                table_number: state.selectedTable,
+                                booking_date: state.date,
+                                start_time: state.startTime,
+                                duration: state.duration,
+                                customer_name: state.customerName.trim(),
+                                customer_email: state.customerEmail.trim().toLowerCase(),
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature
+                            })
+                        });
+
+                        state.bookingResult = data.booking;
+                        goToStep(4); // index of 'confirm' step in ['table', 'datetime', 'pick-table', 'summary', 'confirm']
+                    } catch (err) {
+                        setError(err.message);
+                    } finally {
+                        state.loading = false;
+                        render();
+                    }
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
         } catch (err) {
             setError(err.message);
-            if (err.message.includes('just booked')) {
-                await loadTables();
-            }
-        } finally {
             state.loading = false;
             render();
         }
     }
+
 
     function renderStepIndicator() {
         return STEPS.slice(0, -1).map((_, i) => {
@@ -381,8 +403,8 @@
 
         return `
             <div class="booking-step active" data-step="summary">
-                <h3 class="booking-step-title">Booking Summary</h3>
-                <p class="booking-step-subtitle">Review your reservation details</p>
+                <h3 class="booking-step-title">Confirm Details & Pay</h3>
+                <p class="booking-step-subtitle">Review your reservation and enter guest info</p>
 
                 <div class="booking-summary">
                     <div class="booking-summary-row"><span>Table Type</span><span>${state.selectedType?.name}</span></div>
@@ -390,66 +412,22 @@
                     <div class="booking-summary-row"><span>Date</span><span>${formatDateDisplay(state.date)}</span></div>
                     <div class="booking-summary-row"><span>Time</span><span>${startDisplay} – ${endDisplay}</span></div>
                     <div class="booking-summary-row"><span>Duration</span><span>${state.duration} Hour${state.duration > 1 ? 's' : ''}</span></div>
-                    <div class="booking-summary-row"><span>Payment Status</span><span>Not yet paid</span></div>
-                    <div class="booking-summary-row"><span>Total Amount</span><span>${formatPrice(state.price)}</span></div>
+                    <div class="booking-summary-row"><span>Total Amount</span><span class="booking-price-amount" style="color:var(--accent-color);font-weight:700;font-size:1.1rem;">${formatPrice(state.price)}</span></div>
                 </div>
 
-                <div class="booking-notice">
-                    <strong>Important:</strong> All table bookings are non-refundable. Please verify your table type, date, time, duration, and amount before making payment.
-                </div>
-            </div>
-        `;
-    }
-
-    function renderPaymentStep() {
-        const qrUrl = state.paymentConfig?.qr_code_url || 'assets/images/qr-code.png';
-        const upiId = state.paymentConfig?.upi_id || '';
-
-        return `
-            <div class="booking-step active" data-step="payment">
-                <h3 class="booking-step-title">Complete Payment</h3>
-                <p class="booking-step-subtitle">Scan the QR code and complete the payment</p>
-
-                <div class="booking-payment-section">
-                    <div class="booking-amount-display">Amount to Pay: ${formatPrice(state.price)}</div>
-                    <div class="booking-qr-wrapper">
-                        <img src="${qrUrl}" alt="Payment QR Code" loading="lazy">
-                    </div>
-                    ${upiId ? `<p class="booking-upi-id">UPI ID: ${upiId}</p>` : ''}
-                    <p class="booking-step-subtitle">Scan with any UPI app (Paytm, PhonePe, GPay, BHIM)</p>
+                <div class="booking-form-group" style="margin-top:1.25rem;">
+                    <label for="customerName" style="display:block;margin-bottom:0.35rem;font-size:0.85rem;color:var(--text-muted);">Full Name *</label>
+                    <input type="text" id="customerName" placeholder="Enter your full name" value="${state.customerName}" maxlength="100" style="width:100%;padding:0.65rem 0.85rem;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:var(--primary-bg);color:var(--text-color);font-family:var(--font-body);font-size:0.88rem;" required>
                 </div>
 
-                <div class="booking-notice">
-                    <strong>No Refunds:</strong> All table bookings are non-refundable. Verify all details before paying.
-                </div>
-            </div>
-        `;
-    }
-
-    function renderUtrStep() {
-        return `
-            <div class="booking-step active" data-step="utr">
-                <h3 class="booking-step-title">Submit Payment Details</h3>
-                <p class="booking-step-subtitle">Enter your details after completing the UPI payment</p>
-
-                <div class="booking-form-group">
-                    <label for="customerName">Full Name *</label>
-                    <input type="text" id="customerName" placeholder="Enter your full name" value="${state.customerName}" maxlength="100" required>
+                <div class="booking-form-group" style="margin-top:1rem;">
+                    <label for="customerEmail" style="display:block;margin-bottom:0.35rem;font-size:0.85rem;color:var(--text-muted);">Gmail / Email Address *</label>
+                    <input type="email" id="customerEmail" placeholder="Enter your email address" value="${state.customerEmail}" maxlength="150" style="width:100%;padding:0.65rem 0.85rem;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:var(--primary-bg);color:var(--text-color);font-family:var(--font-body);font-size:0.88rem;" required>
+                    <small style="color:var(--text-muted);font-size:0.75rem;margin-top:4px;display:block">Your confirmation receipt and booking details will be emailed here.</small>
                 </div>
 
-                <div class="booking-form-group">
-                    <label for="customerEmail">Gmail / Email Address *</label>
-                    <input type="email" id="customerEmail" placeholder="Enter your email for booking confirmation" value="${state.customerEmail}" maxlength="150" required>
-                    <small style="color:var(--text-muted,#888);font-size:0.78rem;margin-top:4px;display:block">A confirmation email will be sent here once your payment is verified.</small>
-                </div>
-
-                <div class="booking-form-group">
-                    <label for="utrNumber">UTR / Transaction Number *</label>
-                    <input type="text" id="utrNumber" placeholder="Enter UTR from your payment app" value="${state.utrNumber}" maxlength="30" required>
-                </div>
-
-                <div class="booking-notice">
-                    Your booking will be marked as <strong>Pending Verification</strong> until the restaurant confirms your payment. You will receive an email notification.
+                <div class="booking-notice" style="margin-top:1.25rem;">
+                    <strong>Non-Refundable Policy:</strong> All table bookings are non-refundable. Please verify all details before making payment.
                 </div>
             </div>
         `;
@@ -462,21 +440,21 @@
         return `
             <div class="booking-step active" data-step="confirm">
                 <div class="booking-confirmation">
-                    <div class="booking-confirmation-icon"><i class='bx bx-check'></i></div>
-                    <h3 class="booking-step-title">Booking Submitted Successfully</h3>
-                    <p class="booking-id">Booking ID: ${b.booking_id}</p>
+                    <div class="booking-confirmation-icon" style="background:rgba(40,167,69,0.15);color:#28a745;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1.5rem;"><i class='bx bx-check'></i></div>
+                    <h3 class="booking-step-title">Booking Confirmed Successfully!</h3>
+                    <p class="booking-id" style="font-size:1.25rem;font-weight:700;color:var(--accent-color);margin:0.5rem 0 1.5rem;">Booking ID: #${b.booking_id}</p>
 
                     <div class="booking-summary" style="text-align:left;">
-                        <div class="booking-summary-row"><span>Name</span><span>${b.customer_name}</span></div>
+                        <div class="booking-summary-row"><span>Guest Name</span><span>${b.customer_name}</span></div>
                         <div class="booking-summary-row"><span>Table</span><span>${b.table_type_name} — Table ${b.table_number}</span></div>
                         <div class="booking-summary-row"><span>Date</span><span>${formatDateDisplay(b.booking_date)}</span></div>
                         <div class="booking-summary-row"><span>Time</span><span>${b.start_time_display} – ${b.end_time_display}</span></div>
                         <div class="booking-summary-row"><span>Duration</span><span>${b.duration} Hour${b.duration > 1 ? 's' : ''}</span></div>
-                        <div class="booking-summary-row"><span>Amount</span><span>${formatPrice(b.amount)}</span></div>
+                        <div class="booking-summary-row"><span>Amount Paid</span><span>${formatPrice(b.amount)}</span></div>
                     </div>
 
-                    <div class="booking-status-badge">${b.payment_status}</div>
-                    <p class="booking-step-subtitle">Your payment will be verified by the restaurant.</p>
+                    <div class="booking-status-badge" style="display:inline-block;background:rgba(40,167,69,0.15);color:#28a745;padding:0.35rem 1rem;border-radius:20px;font-size:0.8rem;font-weight:700;margin-top:1.5rem;">Payment Verified</div>
+                    <p class="booking-step-subtitle" style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-muted);">A confirmation email has been sent to you.</p>
                 </div>
             </div>
         `;
@@ -488,15 +466,13 @@
             case 'datetime': return renderDateTimeStep();
             case 'pick-table': return renderPickTableStep();
             case 'summary': return renderSummaryStep();
-            case 'payment': return renderPaymentStep();
-            case 'utr': return renderUtrStep();
             case 'confirm': return renderConfirmStep();
             default: return '';
         }
     }
 
     function renderFooter() {
-        if (state.step === 6) {
+        if (STEPS[state.step] === 'confirm') {
             return `<button type="button" class="btn btn-primary" id="bookingDoneBtn">Done</button>`;
         }
 
@@ -505,14 +481,14 @@
             : '';
 
         let nextLabel = 'Continue';
-        if (state.step === 4) nextLabel = 'I Have Paid';
-        if (state.step === 5) nextLabel = state.loading ? 'Submitting...' : 'Confirm Booking';
+        if (STEPS[state.step] === 'summary') nextLabel = state.loading ? 'Processing...' : 'Pay & Book';
 
         const nextDisabled = state.loading ? ' disabled' : '';
         const nextBtn = `<button type="button" class="btn btn-primary" id="bookingNextBtn"${nextDisabled}>${nextLabel}</button>`;
 
         return backBtn + nextBtn;
     }
+
 
     function render() {
         if (!modalEl) return;
@@ -588,9 +564,6 @@
             state.customerEmail = e.target.value;
         });
 
-        document.getElementById('utrNumber')?.addEventListener('input', (e) => {
-            state.utrNumber = e.target.value;
-        });
     }
 
     async function handleNext() {
@@ -616,23 +589,26 @@
                 break;
 
             case 'summary':
-                goToStep(4);
-                if (!state.paymentConfig) await loadPaymentConfig();
-                render();
-                break;
-
-            case 'payment':
-                goToStep(5);
-                break;
-
-            case 'utr':
-                await submitBooking();
+                if (!state.customerName.trim()) {
+                    setError('Please enter your full name.');
+                    return;
+                }
+                if (!state.customerEmail.trim()) {
+                    setError('Please enter your email address.');
+                    return;
+                }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.customerEmail.trim())) {
+                    setError('Please enter a valid email address.');
+                    return;
+                }
+                await handlePaymentAndBooking();
                 break;
 
             default:
                 break;
         }
     }
+
 
     function initBookingModal() {
         overlayEl = document.getElementById('bookingModal');
@@ -641,7 +617,7 @@
         modalEl = overlayEl.querySelector('.booking-modal');
 
         overlayEl.addEventListener('click', (e) => {
-            if (e.target === overlayEl && state.step < 6) closeModal();
+            if (e.target === overlayEl && STEPS[state.step] !== 'confirm') closeModal();
         });
 
         document.querySelectorAll('.btn-secondary').forEach((btn) => {

@@ -2,12 +2,15 @@ const express = require('express');
 const {
     getTableTypesWithInventory,
     getAvailableTimeSlots,
-    getTableAvailabilitySummary
+    getTableAvailabilitySummary,
+    getTableTypeById
 } = require('../services/availability');
 const { createBooking } = require('../services/booking');
 const { formatTime12h, getPriceForDuration } = require('../services/helpers');
-const { sendBookingSubmitted } = require('../services/emailService');
+const { sendBookingSubmitted, sendBookingConfirmation } = require('../services/emailService');
 const db = require('../db/database');
+const crypto = require('crypto');
+
 
 const router = express.Router();
 
@@ -118,17 +121,107 @@ router.get('/bookings/pending-count', async (req, res) => {
     }
 });
 
+router.post('/payments/order', async (req, res) => {
+    try {
+        const tableTypeId = parseInt(req.body.table_type_id, 10);
+        const duration = parseInt(req.body.duration, 10);
+
+        if (!tableTypeId || ![1, 2].includes(duration)) {
+            return res.status(400).json({ error: 'table_type_id and duration (1 or 2) are required.' });
+        }
+
+        const tableType = await getTableTypeById(tableTypeId);
+        if (!tableType) {
+            return res.status(404).json({ error: 'Table type not found.' });
+        }
+
+        const amount = getPriceForDuration(tableType, duration);
+
+        const keyId = process.env.RAZORPAY_KEY_ID;
+        const keySecret = process.env.RAZORPAY_KEY_SECRET;
+
+        if (!keyId || !keySecret) {
+            return res.status(500).json({ error: 'Razorpay keys are not configured on the server.' });
+        }
+
+        const response = await fetch('https://api.razorpay.com/v1/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64')
+            },
+            body: JSON.stringify({
+                amount: amount * 100, // paise
+                currency: 'INR',
+                receipt: `receipt_booking_${Date.now()}`
+            })
+        });
+
+        if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            console.error('[Razorpay Order Creation Failed]', JSON.stringify(errData, null, 2));
+            const description = errData?.error?.description || errData?.error?.reason || 'Failed to create Razorpay order.';
+            return res.status(502).json({ error: `Razorpay: ${description}` });
+        }
+
+        const order = await response.json();
+
+        res.json({
+            order_id: order.id,
+            amount: order.amount,
+            key_id: keyId,
+            restaurant_name: process.env.RESTAURANT_NAME || 'WorldPlate'
+        });
+    } catch (error) {
+        console.error('[Payments Order Route Error]', error);
+        res.status(500).json({ error: 'Failed to create payment order.' });
+    }
+});
+
 router.post('/bookings', async (req, res) => {
     try {
+        const {
+            table_type_id,
+            table_number,
+            booking_date,
+            start_time,
+            duration,
+            customer_name,
+            customer_email,
+            razorpay_payment_id,
+            razorpay_order_id,
+            razorpay_signature
+        } = req.body;
+
+        if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
+            return res.status(400).json({ error: 'Razorpay payment parameters are required.' });
+        }
+
+        // Verify Razorpay Signature
+        const secret = process.env.RAZORPAY_KEY_SECRET;
+        if (!secret) {
+            return res.status(500).json({ error: 'Razorpay secret is not configured on the server.' });
+        }
+
+        const hmac = crypto.createHmac('sha256', secret);
+        hmac.update(`${razorpay_order_id}|${razorpay_payment_id}`);
+        const generated_signature = hmac.digest('hex');
+
+        if (generated_signature !== razorpay_signature) {
+            console.warn('[BookingRoute] Signature verification failed. Expected:', generated_signature, 'Got:', razorpay_signature);
+            return res.status(400).json({ error: 'Payment verification failed. Invalid signature.' });
+        }
+
         const payload = {
-            table_type_id: parseInt(req.body.table_type_id, 10),
-            table_number: parseInt(req.body.table_number, 10),
-            booking_date: req.body.booking_date,
-            start_time: req.body.start_time,
-            duration: parseInt(req.body.duration, 10),
-            customer_name: req.body.customer_name,
-            utr_number: req.body.utr_number,
-            customer_email: req.body.customer_email
+            table_type_id: parseInt(table_type_id, 10),
+            table_number: parseInt(table_number, 10),
+            booking_date,
+            start_time,
+            duration: parseInt(duration, 10),
+            customer_name,
+            customer_email,
+            utr_number: razorpay_payment_id,
+            payment_status: 'Payment Verified'
         };
 
         const result = await createBooking(payload);
@@ -141,15 +234,17 @@ router.post('/bookings', async (req, res) => {
 
         const emailBooking = {
             ...booking,
-            customer_email: (req.body.customer_email || '').trim().toLowerCase(),
-            utr_number: (req.body.utr_number || '').trim().toUpperCase()
+            customer_email: (customer_email || '').trim().toLowerCase(),
+            utr_number: razorpay_payment_id
         };
-        sendBookingSubmitted(emailBooking).catch((err) =>
-            console.error('[BookingRoute] sendBookingSubmitted error:', err.message)
+
+        // Send confirmation email directly since payment is verified
+        sendBookingConfirmation(emailBooking).catch((err) =>
+            console.error('[BookingRoute] sendBookingConfirmation error:', err.message)
         );
 
         res.status(201).json({
-            message: 'Your booking has been submitted successfully. Your payment is pending verification.',
+            message: 'Your booking has been confirmed successfully.',
             booking: {
                 ...booking,
                 start_time_display: formatTime12h(booking.start_time),
@@ -157,10 +252,11 @@ router.post('/bookings', async (req, res) => {
             }
         });
     } catch (error) {
-        console.error(error);
+        console.error('[BookingRoute Error]', error);
         res.status(500).json({ error: 'Failed to create booking.' });
     }
 });
+
 
 router.get('/bookings/:bookingId', async (req, res) => {
     try {

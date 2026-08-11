@@ -21,8 +21,10 @@ async function createBooking(payload) {
         duration,
         customer_name: customerName,
         utr_number: utrNumber,
-        customer_email: customerEmail
+        customer_email: customerEmail,
+        payment_status: paymentStatus = 'Pending Verification'
     } = payload;
+
 
     if (!Number.isInteger(tableTypeId) || tableTypeId <= 0) {
         return { error: 'Invalid table type.', status: 400 };
@@ -115,7 +117,7 @@ async function createBooking(payload) {
                     table_type_id, table_type_name, table_number,
                     booking_date, start_time, end_time, duration,
                     amount, payment_status, expires_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending Verification', ?)`,
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             args: [
                 bookingId,
                 customerName.trim(),
@@ -129,9 +131,11 @@ async function createBooking(payload) {
                 endTime,
                 duration,
                 amount,
+                paymentStatus,
                 expiresAt
             ]
         });
+
 
         const bookingResult = await tx.execute({
             sql: `SELECT booking_id, customer_name, table_type_name, table_number,
