@@ -138,7 +138,7 @@ async function createBooking(payload) {
 
 
         const bookingResult = await tx.execute({
-            sql: `SELECT booking_id, customer_name, table_type_name, table_number,
+            sql: `SELECT booking_id, customer_name, customer_email, table_type_name, table_number,
                          booking_date, start_time, end_time, duration, amount,
                          payment_status, created_at
                   FROM bookings WHERE booking_id = ?`,

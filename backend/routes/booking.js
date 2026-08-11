@@ -252,7 +252,7 @@ router.post('/bookings', async (req, res) => {
         };
 
         // Send confirmation email directly since payment is verified
-        sendBookingConfirmation(emailBooking).catch((err) =>
+        await sendBookingConfirmation(emailBooking).catch((err) =>
             console.error('[BookingRoute] sendBookingConfirmation error:', err.message)
         );
 

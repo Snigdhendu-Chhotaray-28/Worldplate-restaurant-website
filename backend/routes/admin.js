@@ -101,9 +101,13 @@ router.patch('/bookings/:id/payment-status', async (req, res) => {
 
         if (booking) {
             if (paymentStatus === 'Payment Verified') {
-                sendBookingConfirmation(booking).catch(console.error);
+                await sendBookingConfirmation(booking).catch((err) =>
+                    console.error('[AdminRoute] sendBookingConfirmation error:', err.message)
+                );
             } else if (paymentStatus === 'Payment Rejected') {
-                sendBookingRejection(booking, reasonValue).catch(console.error);
+                await sendBookingRejection(booking, reasonValue).catch((err) =>
+                    console.error('[AdminRoute] sendBookingRejection error:', err.message)
+                );
             }
         }
 

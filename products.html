@@ -20,15 +20,19 @@
         <a href="index.html" class="logo">World<span>Plate</span></a>
         <nav class="navbar">
             <div class="close-menu"><i class='bx bx-x'></i></div>
+            <div class="mobile-nav-top-action">
+                <a href="index.html#home" class="btn btn-primary" id="mobileBookTableBtn"><i class='bx bx-calendar-plus'></i> Book A Table</a>
+            </div>
             <a href="index.html#home">Home</a>
             <a href="index.html#menu">Menu</a>
             <a href="index.html#about">About Us</a>
             <a href="index.html#specials">Specials</a>
             <a href="index.html#contact">Contact</a>
+            <a href="products.html" class="active">All Dishes</a>
         </nav>
         <div class="header-actions">
             <button id="theme-toggle" class="theme-toggle-btn"><i class='bx bx-moon'></i></button>
-            <a href="products.html" class="cart-icon"><i class='bx bx-shopping-bag'></i></a>
+            <button class="contact-us-icon" id="headerContactBtn" title="Support & Complaints"><i class='bx bx-support'></i></button>
             <a href="#" id="openMenuCardBtn" class="btn btn-primary">Menu Card</a>
             <!-- Mobile Menu Toggle -->
             <div class="menu-toggle"><i class='bx bx-menu'></i></div>
@@ -982,6 +986,73 @@
             </div>
         </div>
     </div>
+        </div>
+    <!-- Floating Contact Support Button -->
+    <button class="floating-contact-btn" id="floatingContactBtn" title="Help & Complaints">
+        <i class='bx bx-headphone'></i> <span>Support</span>
+    </button>
+
+    <!-- Contact & Complaint Modal -->
+    <div class="contact-modal-overlay" id="contactSupportModal">
+        <div class="contact-modal-card">
+            <div class="contact-modal-header">
+                <div>
+                    <h3>Support & <span>Complaints</span></h3>
+                    <p class="contact-modal-subtitle">Report a payment problem or technical issue — we are here to help!</p>
+                </div>
+                <button class="contact-close-btn" id="closeContactModalBtn">&times;</button>
+            </div>
+
+            <!-- Direct Actions: Email & Call -->
+            <div class="contact-direct-actions">
+                <a href="mailto:snigdhenduchhotaray@gmail.com?subject=WorldPlate%20Payment%20%2F%20Technical%20Issue" class="contact-direct-btn email-btn">
+                    <i class='bx bx-envelope'></i> Email Us
+                </a>
+                <a href="tel:7751080146" class="contact-direct-btn call-btn">
+                    <i class='bx bx-phone-call'></i> Call: 7751080146
+                </a>
+            </div>
+
+            <!-- Web3Forms Complaint Form -->
+            <form action="https://api.web3forms.com/submit" method="POST" id="complaintWeb3Form">
+                <input type="hidden" name="access_key" value="02047ca8-a0c3-4d4b-871c-4bd591244bb4">
+                <input type="hidden" name="subject" value="WorldPlate Complaint / Technical Issue">
+                <input type="hidden" name="from_name" value="WorldPlate Website User">
+
+                <div class="contact-form-group">
+                    <label for="compName">Your Full Name *</label>
+                    <input type="text" id="compName" name="name" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="contact-form-group">
+                    <label for="compEmail">Your Email Address *</label>
+                    <input type="email" id="compEmail" name="email" placeholder="Enter your email address" required>
+                </div>
+
+                <div class="contact-form-group">
+                    <label for="compIssueType">Issue Type *</label>
+                    <select id="compIssueType" name="issue_type" required>
+                        <option value="Payment Problem">Payment / Transaction Problem</option>
+                        <option value="Booking Problem">Table Booking Issue</option>
+                        <option value="Technical Error">Website Technical Error</option>
+                        <option value="General Complaint">General Complaint / Inquiry</option>
+                    </select>
+                </div>
+
+                <div class="contact-form-group">
+                    <label for="compBookingId">Booking ID (Optional)</label>
+                    <input type="text" id="compBookingId" name="booking_id" placeholder="e.g. WP-ABC123">
+                </div>
+
+                <div class="contact-form-group">
+                    <label for="compMessage">Complaint Details / Message *</label>
+                    <textarea id="compMessage" name="message" rows="4" placeholder="Describe your problem or complaint in detail..." required></textarea>
+                </div>
+
+                <button type="submit" class="contact-submit-btn" id="compSubmitBtn">
+                    <i class='bx bx-paper-plane'></i> Submit Complaint
+                </button>
+            </form>
         </div>
     </div>
 

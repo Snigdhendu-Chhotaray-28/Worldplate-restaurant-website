@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initProductSearch();
     initMenuCardModal();
     initContactForm();
+    initContactModal();
     
     // Wait for everything to load (including images)
     window.addEventListener("load", () => {
@@ -389,4 +390,87 @@ function initContactForm() {
             submitBtn.disabled = false;
         }
     });
+}
+
+function initContactModal() {
+    const modal = document.getElementById('contactSupportModal');
+    const headerBtn = document.getElementById('headerContactBtn');
+    const floatingBtn = document.getElementById('floatingContactBtn');
+    const closeBtn = document.getElementById('closeContactModalBtn');
+    const form = document.getElementById('complaintWeb3Form');
+    const mobileBookBtn = document.getElementById('mobileBookTableBtn');
+
+    function openModal() {
+        if (modal) modal.classList.add('active');
+    }
+
+    function closeModal() {
+        if (modal) modal.classList.remove('active');
+    }
+
+    if (headerBtn) headerBtn.addEventListener('click', openModal);
+    if (floatingBtn) floatingBtn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    }
+
+    if (mobileBookBtn) {
+        mobileBookBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const mainBookBtn = document.getElementById('bookTableBtn');
+            if (mainBookBtn) {
+                mainBookBtn.click();
+            } else {
+                window.location.href = 'index.html#home';
+            }
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('compSubmitBtn');
+            const originalText = submitBtn ? submitBtn.innerHTML : 'Submit Complaint';
+
+            if (submitBtn) {
+                submitBtn.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Sending Complaint...";
+                submitBtn.disabled = true;
+            }
+
+            try {
+                const formData = new FormData(form);
+                const response = await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    body: formData
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("Thank you! Your complaint has been submitted successfully. Our team will review it and get back to you via email/phone.");
+                    form.reset();
+                    closeModal();
+                } else {
+                    alert("Submission Note: " + (data.message || 'Connecting directly to email...'));
+                    // Fallback to mailto if API key is not active
+                    window.location.href = `mailto:snigdhenduchhotaray@gmail.com?subject=WorldPlate%20Complaint&body=${encodeURIComponent(
+                        `Name: ${form.name.value}\nEmail: ${form.email.value}\nIssue: ${form.issue_type.value}\nBooking ID: ${form.booking_id.value}\nDetails: ${form.message.value}`
+                    )}`;
+                }
+            } catch (err) {
+                // Fallback to direct mailto
+                window.location.href = `mailto:snigdhenduchhotaray@gmail.com?subject=WorldPlate%20Complaint&body=${encodeURIComponent(
+                    `Name: ${form.name.value}\nEmail: ${form.email.value}\nIssue: ${form.issue_type.value}\nBooking ID: ${form.booking_id.value}\nDetails: ${form.message.value}`
+                )}`;
+            } finally {
+                if (submitBtn) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            }
+        });
+    }
 }

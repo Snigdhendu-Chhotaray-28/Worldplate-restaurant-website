@@ -999,6 +999,9 @@ html {
     padding: 0.5rem 1.5rem;
     border: 1px solid rgba(255,255,255,0.1);
     transition: border-color 0.3s;
+    overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .search-input-wrapper:focus-within {
@@ -1013,6 +1016,8 @@ html {
 
 #productSearchInput {
     flex: 1;
+    min-width: 0;
+    width: 100%;
     background: transparent;
     border: none;
     color: var(--text-color);
@@ -1020,6 +1025,8 @@ html {
     padding: 0.5rem 0;
     outline: none;
     font-family: var(--font-body);
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .search-recommendations {
@@ -1211,6 +1218,283 @@ html {
 
 .menu-list-info .price {
     font-size: 1.2rem;
-    color: var(--accent-color);
+}
+
+/* Global Mobile Viewport Overflow Protection */
+html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+/* Mobile & Tablet Navigation Menu Vertical Ordering & Stagger Animation */
+@media (max-width: 991px) {
+    .navbar {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        padding-top: 5rem;
+        gap: 0.25rem;
+    }
+
+    .mobile-nav-top-action {
+        order: -1;
+        margin-bottom: 1rem;
+        width: 100%;
+        padding: 0 1.5rem;
+    }
+
+    .mobile-nav-top-action .btn {
+        width: 100%;
+        text-align: center;
+        padding: 0.85rem 1.5rem;
+        font-size: 1.05rem;
+        font-weight: 700;
+        box-shadow: 0 4px 15px rgba(255, 69, 0, 0.5);
+    }
+
+    .navbar.active > * {
+        opacity: 0;
+        transform: translateY(-12px);
+        animation: navItemFadeDown 0.35s ease forwards;
+    }
+
+    .navbar.active > .close-menu { opacity: 1; transform: none; animation: none; }
+    .navbar.active > .mobile-nav-top-action { animation-delay: 0.05s; }
+    .navbar.active > a:nth-of-type(1) { animation-delay: 0.1s; }
+    .navbar.active > a:nth-of-type(2) { animation-delay: 0.15s; }
+    .navbar.active > a:nth-of-type(3) { animation-delay: 0.2s; }
+    .navbar.active > a:nth-of-type(4) { animation-delay: 0.25s; }
+    .navbar.active > a:nth-of-type(5) { animation-delay: 0.3s; }
+    .navbar.active > a:nth-of-type(6) { animation-delay: 0.35s; }
+}
+
+@keyframes navItemFadeDown {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Floating Contact Support Button */
+.floating-contact-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9999;
+    background: linear-gradient(135deg, #ff6b00, #ff4500);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 0.8rem 1.4rem;
+    font-size: 0.95rem;
     font-weight: 700;
+    font-family: var(--font-body);
+    box-shadow: 0 8px 25px rgba(255, 69, 0, 0.45);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floating-contact-btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(255, 69, 0, 0.6);
+}
+
+.floating-contact-btn i {
+    font-size: 1.3rem;
+}
+
+/* Contact Us Icon in Header */
+.contact-us-icon {
+    background: transparent;
+    color: var(--text-color);
+    font-size: 1.6rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s;
+    text-decoration: none;
+}
+
+.contact-us-icon:hover {
+    color: var(--accent-color);
+}
+
+/* Contact Us Modal Overlay & Card */
+.contact-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.78);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.contact-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.contact-modal-card {
+    background: var(--secondary-bg, #1a1a1a);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    color: var(--text-color, #fff);
+    position: relative;
+    padding: 1.75rem;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+}
+
+.contact-modal-overlay.active .contact-modal-card {
+    transform: translateY(0);
+}
+
+.contact-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.contact-modal-header h3 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin: 0 0 4px 0;
+}
+
+.contact-modal-header h3 span {
+    color: var(--accent-color, #ff4500);
+}
+
+.contact-modal-subtitle {
+    font-size: 0.82rem;
+    color: var(--text-muted, #aaa);
+    margin: 0;
+}
+
+.contact-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted, #999);
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.contact-close-btn:hover {
+    color: var(--accent-color, #ff4500);
+}
+
+.contact-direct-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.contact-direct-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0.7rem 0.85rem;
+    border-radius: 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    text-align: center;
+}
+
+.contact-direct-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.contact-direct-btn.email-btn {
+    background: rgba(255, 69, 0, 0.15);
+    color: #ff4500;
+    border: 1px solid rgba(255, 69, 0, 0.3);
+}
+
+.contact-direct-btn.call-btn {
+    background: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.contact-form-group {
+    margin-bottom: 0.85rem;
+}
+
+.contact-form-group label {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-muted, #aaa);
+    margin-bottom: 0.3rem;
+}
+
+.contact-form-group input,
+.contact-form-group select,
+.contact-form-group textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: var(--primary-bg, #111);
+    color: var(--text-color, #fff);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.contact-form-group input:focus,
+.contact-form-group select:focus,
+.contact-form-group textarea:focus {
+    border-color: var(--accent-color, #ff4500);
+}
+
+.contact-submit-btn {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 12px;
+    background: var(--accent-color, #ff4500);
+    color: #fff;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    margin-top: 0.35rem;
+}
+
+.contact-submit-btn:hover {
+    background: #e63e00;
+    transform: translateY(-2px);
 }
