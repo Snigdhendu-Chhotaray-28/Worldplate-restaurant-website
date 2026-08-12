@@ -8,11 +8,23 @@ async function requireAdmin(req, res, next) {
         return res.status(401).json({ error: 'Unauthorized. Missing admin credentials.' });
     }
 
+    // Fast-path: check env ADMIN_API_KEY first (no DB call needed)
+    const expectedKey = process.env.ADMIN_API_KEY;
+    if (expectedKey) {
+        try {
+            const keyBuf = Buffer.from(String(apiKey), 'utf8');
+            const expectedBuf = Buffer.from(String(expectedKey), 'utf8');
+            if (keyBuf.length === expectedBuf.length && crypto.timingSafeEqual(keyBuf, expectedBuf)) {
+                return next();
+            }
+        } catch (_) { /* ignore buffer comparison errors */ }
+    }
+
     try {
-        // First check database admin table for matching password or id:password
+        // Check database admin table — only match on password column (token IS the password)
         const dbResult = await db.execute({
-            sql: 'SELECT id, password FROM admin WHERE password = ? OR (id || ":" || password) = ? OR id = ? LIMIT 1',
-            args: [apiKey, apiKey, apiKey]
+            sql: 'SELECT id, password FROM admin WHERE password = ? LIMIT 1',
+            args: [apiKey]
         });
 
         if (dbResult.rows.length > 0) {
@@ -20,21 +32,10 @@ async function requireAdmin(req, res, next) {
             return next();
         }
 
-        // Fallback check against process.env.ADMIN_API_KEY if configured
-        const expectedKey = process.env.ADMIN_API_KEY;
-        if (expectedKey) {
-            const keyBuf = Buffer.from(String(apiKey), 'utf8');
-            const expectedBuf = Buffer.from(String(expectedKey), 'utf8');
-
-            if (keyBuf.length === expectedBuf.length && crypto.timingSafeEqual(keyBuf, expectedBuf)) {
-                return next();
-            }
-        }
-
         return res.status(401).json({ error: 'Unauthorized. Invalid admin credentials.' });
     } catch (err) {
-        console.error('[AuthMiddleware] Error verifying admin credentials:', err);
-        return res.status(500).json({ error: 'Internal server error verifying credentials.' });
+        console.error('[AuthMiddleware] DB error verifying credentials:', err.message || err);
+        return res.status(500).json({ error: 'Internal server error verifying credentials. DB: ' + (err.message || 'unknown') });
     }
 }
 
