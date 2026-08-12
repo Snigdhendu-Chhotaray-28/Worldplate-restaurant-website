@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initMenuCardModal();
     initContactForm();
     initContactModal();
+    handleBookingBtnPlacement();
 
     // Wait for everything to load (including images)
     window.addEventListener("load", () => {
@@ -453,3 +454,24 @@ function initContactModal() {
         });
     }
 }
+
+function handleBookingBtnPlacement() {
+    const btn = document.getElementById('openBookingPanelBtn');
+    if (!btn) return;
+    const navbar = document.querySelector('.navbar');
+    const headerActions = document.querySelector('.header-actions');
+    const closeMenuBtn = document.querySelector('.close-menu');
+    
+    if (window.innerWidth < 430) {
+        if (btn.parentElement === headerActions) {
+            navbar.insertBefore(btn, closeMenuBtn.nextElementSibling);
+            btn.classList.add('glass-effect-btn');
+        }
+    } else {
+        if (btn.parentElement === navbar) {
+            headerActions.insertBefore(btn, headerActions.firstElementChild);
+            btn.classList.remove('glass-effect-btn');
+        }
+    }
+}
+window.addEventListener('resize', handleBookingBtnPlacement);

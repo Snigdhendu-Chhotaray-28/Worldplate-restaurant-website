@@ -180,6 +180,154 @@
         }
     }
 
+    /* ─────────────────────────────────────────────────────
+       Payment Processing Overlay
+       ───────────────────────────────────────────────────── */
+
+    const PP_STEPS = [
+        { label: 'Fetching your booking details',   sublabel: 'Connecting to server...' },
+        { label: 'Fetching payment details',        sublabel: 'Retrieving transaction data...' },
+        { label: 'Confirming payment details',      sublabel: 'Verifying with payment gateway...' },
+        { label: 'Processing your booking',         sublabel: 'Saving to database...' }
+    ];
+
+    let ppOverlayEl = null;
+
+    function buildProcessingOverlayHTML(activeIndex, errorIndex = -1) {
+        const stepsHTML = PP_STEPS.map((s, i) => {
+            let cls = 'pp-step';
+            let iconHTML = '<span style="font-size:0.7rem">○</span>';
+            let sublabel = s.sublabel;
+
+            if (i < activeIndex || (errorIndex >= 0 && i < errorIndex)) {
+                cls += ' pp-step--done';
+                iconHTML = '<i class=\'bx bx-check\'></i>';
+                sublabel = 'Completed';
+            } else if (i === activeIndex && errorIndex < 0) {
+                cls += ' pp-step--active';
+                iconHTML = '<div class="pp-step-spinner"></div>';
+            } else if (i === errorIndex) {
+                cls += ' pp-step--error';
+                iconHTML = '<i class=\'bx bx-x\'></i>';
+                sublabel = 'Failed';
+            }
+
+            return `
+                <div class="${cls}">
+                    <div class="pp-step-icon">${iconHTML}</div>
+                    <div class="pp-step-text">
+                        <div class="pp-step-label">${s.label}</div>
+                        <div class="pp-step-sublabel">${sublabel}</div>
+                    </div>
+                </div>`;
+        }).join('');
+
+        return `
+            <div class="payment-processing-overlay" id="ppOverlay">
+                <div class="payment-processing-card">
+                    <div class="pp-logo">World<span>Plate</span></div>
+                    <div class="pp-icon-wrap">
+                        <div class="pp-main-spinner"></div>
+                    </div>
+                    <h3 class="pp-title">Processing Payment</h3>
+                    <p class="pp-subtitle">Please do not close or refresh this page</p>
+                    <div class="pp-steps">${stepsHTML}</div>
+                    <div class="pp-secure-note">
+                        <i class='bx bx-lock-alt'></i>
+                        256-bit encrypted &nbsp;·&nbsp; Powered by Razorpay
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    function showProcessingOverlay(activeIndex = 0, errorIndex = -1) {
+        // Remove existing overlay if any
+        const existing = document.getElementById('ppOverlay');
+        if (existing) existing.parentNode.removeChild(existing);
+
+        const div = document.createElement('div');
+        div.innerHTML = buildProcessingOverlayHTML(activeIndex, errorIndex);
+        ppOverlayEl = div.firstElementChild;
+        document.body.appendChild(ppOverlayEl);
+        document.body.style.overflow = 'hidden';
+    }
+
+    function updateProcessingOverlay(activeIndex, errorIndex = -1) {
+        const overlay = document.getElementById('ppOverlay');
+        if (!overlay) return;
+        const card = overlay.querySelector('.payment-processing-card');
+        const stepsContainer = card.querySelector('.pp-steps');
+
+        PP_STEPS.forEach((s, i) => {
+            const stepEl = stepsContainer.children[i];
+            if (!stepEl) return;
+            const iconEl = stepEl.querySelector('.pp-step-icon');
+            const sublabelEl = stepEl.querySelector('.pp-step-sublabel');
+
+            stepEl.className = 'pp-step';
+
+            if (errorIndex >= 0 && i < errorIndex) {
+                stepEl.classList.add('pp-step--done');
+                iconEl.innerHTML = '<i class=\'bx bx-check\'></i>';
+                sublabelEl.textContent = 'Completed';
+            } else if (i < activeIndex && errorIndex < 0) {
+                stepEl.classList.add('pp-step--done');
+                iconEl.innerHTML = '<i class=\'bx bx-check\'></i>';
+                sublabelEl.textContent = 'Completed';
+            } else if (i === activeIndex && errorIndex < 0) {
+                stepEl.classList.add('pp-step--active');
+                iconEl.innerHTML = '<div class="pp-step-spinner"></div>';
+                sublabelEl.textContent = s.sublabel;
+            } else if (i === errorIndex) {
+                stepEl.classList.add('pp-step--error');
+                iconEl.innerHTML = '<i class=\'bx bx-x\'></i>';
+                sublabelEl.textContent = 'Failed';
+            } else {
+                iconEl.innerHTML = '<span style="font-size:0.7rem">○</span>';
+                sublabelEl.textContent = s.sublabel;
+            }
+        });
+    }
+
+    function showProcessingError(message) {
+        const overlay = document.getElementById('ppOverlay');
+        if (!overlay) return;
+        const card = overlay.querySelector('.payment-processing-card');
+
+        card.innerHTML = `
+            <div class="pp-logo">World<span>Plate</span></div>
+            <div class="pp-result-icon error"><i class='bx bx-x-circle'></i></div>
+            <h3 class="pp-title" style="color:#dc3545;">Payment Failed</h3>
+            <p class="pp-subtitle">${message || 'Something went wrong. Please try again.'}</p>
+            <button
+                id="ppRetryBtn"
+                style="margin-top:1rem;padding:0.7rem 2rem;background:rgba(220,53,69,0.15);
+                       color:#dc3545;border:1px solid rgba(220,53,69,0.3);border-radius:10px;
+                       font-size:0.88rem;font-weight:600;cursor:pointer;width:100%;"
+            >
+                <i class='bx bx-refresh'></i> &nbsp;Close & Try Again
+            </button>`;
+
+        document.getElementById('ppRetryBtn')?.addEventListener('click', () => {
+            removeProcessingOverlay();
+            state.loading = false;
+            render();
+        });
+    }
+
+    function removeProcessingOverlay() {
+        const el = document.getElementById('ppOverlay');
+        if (el) {
+            el.style.animation = 'ppOverlayIn 0.25s ease reverse forwards';
+            setTimeout(() => {
+                if (el.parentNode) el.parentNode.removeChild(el);
+            }, 250);
+        }
+        ppOverlayEl = null;
+    }
+
+    function delay(ms) { return new Promise(res => setTimeout(res, ms)); }
+
     async function handlePaymentAndBooking() {
         state.loading = true;
         clearError();
@@ -217,12 +365,20 @@
                     }
                 },
                 handler: async function (response) {
-                    try {
-                        state.loading = true;
-                        clearError();
-                        render();
+                    // 3. Show animated processing overlay — freeze the screen
+                    showProcessingOverlay(0);
+                    await delay(900);
 
-                        // 3. Send payment details to confirm booking automatically
+                    updateProcessingOverlay(1);
+                    await delay(950);
+
+                    updateProcessingOverlay(2);
+                    await delay(800);
+
+                    // 4. Step 3 active — make actual API call
+                    updateProcessingOverlay(3);
+
+                    try {
                         const data = await apiFetch('/bookings', {
                             method: 'POST',
                             body: JSON.stringify({
@@ -239,13 +395,18 @@
                             })
                         });
 
+                        // Brief "all done" pause then dismiss and show confirmation
+                        await delay(600);
+                        removeProcessingOverlay();
+
                         state.bookingResult = data.booking;
-                        goToStep(4); // index of 'confirm' step
-                    } catch (err) {
-                        setError(err.message);
-                    } finally {
                         state.loading = false;
-                        render();
+                        goToStep(4); // 'confirm' step
+
+                    } catch (err) {
+                        // Show error in overlay without dismissing
+                        showProcessingError(err.message);
+                        state.loading = false;
                     }
                 }
             };
@@ -257,6 +418,7 @@
                 setError(`Payment Failed: ${failureMsg}`);
             });
             rzp.open();
+
         } catch (err) {
             setError(err.message);
             state.loading = false;

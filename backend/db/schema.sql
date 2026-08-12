@@ -27,7 +27,10 @@ CREATE TABLE IF NOT EXISTS bookings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     booking_id TEXT NOT NULL UNIQUE,
     customer_name TEXT NOT NULL,
+    customer_email TEXT,
     utr_number TEXT NOT NULL,
+    razorpay_order_id TEXT,
+    razorpay_payment_id TEXT,
     table_type_id INTEGER NOT NULL,
     table_type_name TEXT NOT NULL,
     table_number INTEGER NOT NULL,
@@ -38,6 +41,7 @@ CREATE TABLE IF NOT EXISTS bookings (
     amount REAL NOT NULL,
     payment_status TEXT NOT NULL DEFAULT 'Pending Verification'
         CHECK (payment_status IN ('Pending Verification', 'Payment Verified', 'Payment Rejected')),
+    rejection_reason TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     expires_at TEXT NOT NULL,
     FOREIGN KEY (table_type_id) REFERENCES table_types(id)
@@ -56,10 +60,5 @@ CREATE TABLE IF NOT EXISTS settings (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL,
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
-);
-
-CREATE TABLE IF NOT EXISTS admin (
-    id TEXT PRIMARY KEY,
-    password TEXT NOT NULL
 );
 

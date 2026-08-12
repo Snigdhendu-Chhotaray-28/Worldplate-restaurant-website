@@ -42,8 +42,10 @@ const SCHEMA_STATEMENTS = [
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         booking_id TEXT NOT NULL UNIQUE,
         customer_name TEXT NOT NULL,
-        utr_number TEXT NOT NULL,
         customer_email TEXT,
+        utr_number TEXT NOT NULL,
+        razorpay_order_id TEXT,
+        razorpay_payment_id TEXT,
         table_type_id INTEGER NOT NULL,
         table_type_name TEXT NOT NULL,
         table_number INTEGER NOT NULL,
@@ -51,7 +53,7 @@ const SCHEMA_STATEMENTS = [
         start_time TEXT NOT NULL,
         end_time TEXT NOT NULL,
         duration INTEGER NOT NULL CHECK (duration IN (1, 2)),
-        amount INTEGER NOT NULL,
+        amount REAL NOT NULL,
         payment_status TEXT NOT NULL DEFAULT 'Pending Verification'
             CHECK (payment_status IN ('Pending Verification', 'Payment Verified', 'Payment Rejected')),
         rejection_reason TEXT,
@@ -76,6 +78,15 @@ const SCHEMA_STATEMENTS = [
     )`
 ];
 
+// Safe ALTER TABLE statements — these add columns that may not exist yet in existing DBs.
+// Turso (libsql) doesn't support ALTER COLUMN IF NOT EXISTS, so we catch and ignore duplicates.
+const MIGRATION_ALTERS = [
+    `ALTER TABLE bookings ADD COLUMN customer_email TEXT`,
+    `ALTER TABLE bookings ADD COLUMN razorpay_order_id TEXT`,
+    `ALTER TABLE bookings ADD COLUMN razorpay_payment_id TEXT`,
+    `ALTER TABLE bookings ADD COLUMN rejection_reason TEXT`
+];
+
 const DEFAULT_TABLE_TYPES = [
     { slug: '2-seater',    name: '2-Seater',    capacity: 2,  price_1h: 1, price_2h: 1.5, sort_order: 1, tables: 2 },
     { slug: '4-seater',    name: '4-Seater',    capacity: 4,  price_1h: 2, price_2h: 2.5, sort_order: 2, tables: 4 },
@@ -98,6 +109,22 @@ async function migrate() {
         await db.execute(sql);
     }
     console.log('[Migrate] Schema applied.');
+
+    // 1b. Safe ALTER TABLE migrations for new columns (ignore "duplicate column" errors)
+    console.log('[Migrate] Running ALTER TABLE migrations...');
+    for (const sql of MIGRATION_ALTERS) {
+        try {
+            await db.execute(sql);
+            console.log(`[Migrate] Applied: ${sql.replace(/\s+/g, ' ').trim()}`);
+        } catch (err) {
+            if (err.message && err.message.toLowerCase().includes('duplicate column')) {
+                console.log(`[Migrate] Column already exists (skipped): ${sql.replace(/\s+/g, ' ').trim()}`);
+            } else {
+                console.warn(`[Migrate] ALTER warning: ${err.message}`);
+            }
+        }
+    }
+    console.log('[Migrate] ALTER TABLE migrations done.');
 
     // Update prices for existing table types
     console.log('[Migrate] Updating prices for table types...');

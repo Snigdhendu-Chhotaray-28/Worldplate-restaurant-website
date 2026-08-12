@@ -234,6 +234,8 @@ router.post('/bookings', async (req, res) => {
             customer_name,
             customer_email,
             utr_number: razorpay_payment_id,
+            razorpay_order_id,
+            razorpay_payment_id,
             payment_status: 'Payment Verified'
         };
 

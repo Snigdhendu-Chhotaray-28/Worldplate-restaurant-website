@@ -22,6 +22,8 @@ async function createBooking(payload) {
         customer_name: customerName,
         utr_number: utrNumber,
         customer_email: customerEmail,
+        razorpay_order_id: razorpayOrderId,
+        razorpay_payment_id: razorpayPaymentId,
         payment_status: paymentStatus = 'Pending Verification'
     } = payload;
 
@@ -113,16 +115,19 @@ async function createBooking(payload) {
 
         await tx.execute({
             sql: `INSERT INTO bookings (
-                    booking_id, customer_name, utr_number, customer_email,
+                    booking_id, customer_name, customer_email, utr_number,
+                    razorpay_order_id, razorpay_payment_id,
                     table_type_id, table_type_name, table_number,
                     booking_date, start_time, end_time, duration,
                     amount, payment_status, expires_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             args: [
                 bookingId,
                 customerName.trim(),
-                utrNumber.trim().toUpperCase(),
                 emailStr,
+                utrNumber.trim().toUpperCase(),
+                razorpayOrderId || null,
+                razorpayPaymentId || null,
                 tableTypeId,
                 tableType.name,
                 tableNumber,
