@@ -49,11 +49,18 @@
     }
 
     async function loadBookings(status = '') {
-        const query = status ? `?status=${encodeURIComponent(status)}` : '';
-        const data = await adminFetch(`/bookings${query}`);
         const wrap = document.getElementById('bookingsTableWrap');
+        wrap.innerHTML = '<div class="admin-empty" style="color:#aaa;">Loading bookings…</div>';
+        let data;
+        try {
+            const query = status ? `?status=${encodeURIComponent(status)}` : '';
+            data = await adminFetch(`/bookings${query}`);
+        } catch (err) {
+            wrap.innerHTML = `<div class="admin-empty" style="color:#ff6b7a;">⚠️ Failed to load bookings: ${err.message}</div>`;
+            return;
+        }
 
-        if (!data.bookings.length) {
+        if (!data.bookings || !data.bookings.length) {
             wrap.innerHTML = '<div class="admin-empty">No bookings found.</div>';
             return;
         }
@@ -82,7 +89,7 @@
                                 <td style="font-size:0.78rem;color:#aaa;" title="${b.customer_email || ''}">${maskEmail(b.customer_email)}</td>
                                 <td>${b.table_type_name} #${b.table_number}</td>
                                 <td>${b.booking_date}<br>${b.start_time}–${b.end_time}</td>
-                                <td>₹${b.amount.toLocaleString('en-IN')}</td>
+                                <td>₹${Number(b.amount).toLocaleString('en-IN')}</td>
                                 <td style="font-size:0.78rem;">${b.utr_number}</td>
                                 <td>
                                     <span class="admin-status ${statusClass(b.payment_status)}">${b.payment_status}</span>
@@ -266,6 +273,27 @@
         document.getElementById('qrPreview').src = data.qr_code_url;
         document.getElementById('upiIdInput').value = config.upi_id || '';
         document.getElementById('restaurantNameInput').value = config.restaurant_name || '';
+
+        // Load email status
+        loadEmailStatus();
+    }
+
+    async function loadEmailStatus() {
+        const statusEl = document.getElementById('emailStatusResult');
+        if (!statusEl) return;
+        statusEl.innerHTML = '<span style="color:#aaa;">Checking…</span>';
+        try {
+            const res = await adminFetch('/email/status');
+            if (res.verified) {
+                statusEl.innerHTML = `<span style="color:#28a745;">✅ Connected — sending from <strong>${res.user}</strong></span>`;
+            } else if (res.configured) {
+                statusEl.innerHTML = `<span style="color:#ffc107;">⚠️ Credentials set but SMTP verify failed: ${res.message}</span>`;
+            } else {
+                statusEl.innerHTML = `<span style="color:#ff6b7a;">❌ Email not configured. Set EMAIL_USER &amp; EMAIL_PASS in Render dashboard.</span>`;
+            }
+        } catch (e) {
+            statusEl.innerHTML = `<span style="color:#ff6b7a;">❌ Could not check email status.</span>`;
+        }
     }
 
     function showDashboard() {
@@ -387,6 +415,25 @@
         } catch (err) {
             showToast(err.message);
         }
+    });
+
+    document.getElementById('sendTestEmailBtn').addEventListener('click', async () => {
+        const email = (document.getElementById('testEmailInput')?.value || '').trim();
+        if (!email) { showToast('Please enter an email address.'); return; }
+        try {
+            const data = await adminFetch('/email/test', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+            showToast(data.message || 'Test email sent!');
+        } catch (err) {
+            showToast('Email test failed: ' + err.message);
+        }
+    });
+
+    document.getElementById('refreshEmailStatusBtn').addEventListener('click', () => {
+        loadEmailStatus();
     });
 
     if (adminKey) {

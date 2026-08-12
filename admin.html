@@ -96,6 +96,18 @@
                     <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1rem;">Expired bookings are automatically deleted 24 hours after their reservation ends. You can also trigger cleanup manually.</p>
                     <button class="btn btn-secondary" id="runCleanupBtn">Run Cleanup Now</button>
                 </div>
+                <div class="admin-card">
+                    <h3><i class='bx bx-envelope'></i> Email Configuration</h3>
+                    <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:0.75rem;">
+                        Email is used to send booking confirmations to customers. Status is checked against your Render environment variables.
+                    </p>
+                    <div id="emailStatusResult" style="margin-bottom:1rem;font-size:0.9rem;">Checking…</div>
+                    <div style="display:flex;gap:0.65rem;align-items:center;flex-wrap:wrap;">
+                        <input type="email" id="testEmailInput" placeholder="Send test email to…" style="padding:0.55rem 0.85rem;border-radius:8px;background:var(--secondary-bg);color:var(--text-color);border:1px solid rgba(255,255,255,0.12);font-family:var(--font-body);min-width:220px;">
+                        <button class="btn btn-primary" id="sendTestEmailBtn" style="font-size:0.85rem;padding:0.55rem 1rem;">Send Test Email</button>
+                        <button class="btn btn-secondary" id="refreshEmailStatusBtn" style="font-size:0.85rem;padding:0.55rem 1rem;">Refresh Status</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
